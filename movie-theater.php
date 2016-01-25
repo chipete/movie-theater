@@ -4,11 +4,15 @@
 Plugin Name: Movie Theater
 Plugin URI: http://lightmarkcreative.com/movietheater
 Description: Custom post type “films” and “showtimes” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.0
+Version: 1.1
 Author: Chris
 Author URI: http://lightmarkcreative.com
 License: A "Slug" license name e.g. GPL2
 */
+
+/*
+ * testing the github repository 1.1
+ */
 
 /*
 * Load ShowTime and Film Custom Post Types
@@ -31,7 +35,7 @@ function programatically_flush_posts() {
 
 	// deletes all posts within a postType
 
-	$postType = 'showtime';
+	//$postType = 'showtime';
 
 }
 
