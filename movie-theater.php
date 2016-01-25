@@ -11,7 +11,7 @@ License: A "Slug" license name e.g. GPL2
 */
 
 /*
- * testing the github repository 1.1
+ * testing the github repository 1.2
  */
 
 /*
