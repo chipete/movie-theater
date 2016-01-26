@@ -4,7 +4,7 @@
 Plugin Name: Movie Theater
 Plugin URI: http://lightmarkcreative.com/movietheater
 Description: Custom post type “films” and “showtimes” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.4
+Version: 1.5
 Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: GPL2
@@ -79,31 +79,7 @@ function deleteAllPosts($postType) {
 }
 
 
-function makeNewPost($title, $postType) {
 
-    // Setup the author, slug, and title for the post
-    $author_id = 1;
-    //$slug = 'sample-showtime-20';
-    //$title = 'Dummy Showtime #20';
-    //$postType = 'showtime';
-
-    // If the page doesn't already exist, then create it
-    //if(NULL == (get_page_by_title( $title, 'OBJECT', $postType )) ) {
-
-        // Set the post ID so that we know the post was created successfully
-        $post_id = wp_insert_post(
-            array(
-                'comment_status'	=>	'closed',
-                'ping_status'		=>	'closed',
-                'post_author'		=>	$author_id,
-                //'post_name'		=>	$slug,
-                'post_title'	=>	$title,
-                'post_status'	=>	'publish',
-                'post_type'		=>	'Showtime'
-            )
-        );
-    //}
-}
 
 
 function addAllNewShowTimes($showTimeData)
@@ -112,8 +88,6 @@ function addAllNewShowTimes($showTimeData)
     for ($i=0; $i< count($showTimeDataAsArray); $i++) {
         $showTime = new movietheater_ShowTime;
         $showTime->assignValues($showTimeDataAsArray, $i);
-        makeNewPost($showTime->title, 'Showtime');
-
-        //probably put the (addcustomfieldsinfo) things here
+        $showTime->makeNewPost($showTime->title, 'Showtime');
     }
 }

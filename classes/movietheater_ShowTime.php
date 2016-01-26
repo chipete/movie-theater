@@ -66,5 +66,37 @@ class movietheater_ShowTime
         $this->attributes = $VeeziAPIData[$key]['Attributes'];
         $this->audioLanguage = $VeeziAPIData[$key]['AudioLanguage'];
     }
+    function makeNewPost($title, $postType) {
 
+        // Setup the author, slug, and title for the post
+        $author_id = 1;
+        //$slug = 'sample-showtime-20';
+        //$title = 'Dummy Showtime #20';
+        //$postType = 'showtime';
+
+        // If the page doesn't already exist, then create it
+        //if(NULL == (get_page_by_title( $title, 'OBJECT', $postType )) ) {
+
+        // Set the post ID so that we know the post was created successfully
+        $post_id = wp_insert_post(
+            array(
+                'comment_status'	=>	'closed',
+                'ping_status'		=>	'closed',
+                'post_author'		=>	$author_id,
+                //'post_name'		=>	$slug,
+                'post_title'	=>	$title,
+                'post_status'	=>	'publish',
+                'post_type'		=>	'Showtime'
+
+            )
+        );
+        update_field('field_56a12595938bf', $this->featureStartTime, $post_id);
+        update_field('field_56a1261d938c0', $this->featureEndTime, $post_id);
+        update_field('field_56a12574938be', $this->filmId, $post_id);
+        update_field('field_56a12677938c1', $this->title, $post_id);
+        update_field('field_56a126f7938c4', $this->status, $post_id);
+        update_field('field_56a12692938c2', $this->screenId, $post_id);
+        update_field('field_56a126bb938c3', $this->seatsAvailable, $post_id);
+        //}
+    }
 }
