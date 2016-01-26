@@ -4,14 +4,14 @@
 Plugin Name: Movie Theater
 Plugin URI: http://lightmarkcreative.com/movietheater
 Description: Custom post type “films” and “showtimes” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.2
-Author: Chris
+Version: 1.3
+Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: A "Slug" license name e.g. GPL2
 */
 
 /*
- * Version 1.2 Includes the following
+ * Version 1.3 Includes the following
  * ==================================
  * Adds test information to WP database
  * Merged data from old program veezi-film.php which:
