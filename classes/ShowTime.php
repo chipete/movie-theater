@@ -66,4 +66,5 @@ class ShowTime
         $this->attributes = $VeeziAPIData[$key]["Attributes"];
         $this->audioLanguage = $VeeziAPIData[$key]["AudioLanguage"];
     }
+
 }

@@ -4,7 +4,7 @@
 Plugin Name: Movie Theater
 Plugin URI: http://lightmarkcreative.com/movietheater
 Description: Custom post type “films” and “showtimes” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.3
+Version: 1.3.1
 Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: A "Slug" license name e.g. GPL2
@@ -24,16 +24,13 @@ License: A "Slug" license name e.g. GPL2
 /*
 * Load ShowTime and Film Custom Post Types
 */
-////////////////////////////// Includes  //////////////////////////////////
+//=========================== Includes ===========================//
 
 include('classes/ShowTime.php');
 include('classes/Film.php');
 require_once ('inc/custom-post-types.php');
 
-///////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////// Configuration /////////////////////////////////
+//========================= Configuration ========================//
 /*
  * Currently, you must change $myToken to your
  * Veezi API token (found in your Veezi account)
@@ -41,11 +38,7 @@ require_once ('inc/custom-post-types.php');
  */
 $myToken = "PxWHQDAzZEmWZ7s2HZYCCA2";
 
-//////////////////////////////////////////////////////////////////////////
-
-
-
-/////////////////////////// Main Execution ////////////////////////////////
+//======================== Main Execution ========================//
 /**
  * Call web service that returns json using file_get_contents.
  *
@@ -68,8 +61,6 @@ $filmData = callService('https://api.us.veezi.com/v1/film', $VeeziAccessToken);
  * requires array data
 */
 
-
-
 //echo "<div id='container'>";
 //echo "<div class='generalTitle'> All Show Times </div>";
 //$showTimeDataAsArray = objectToArray($showTimeData);
@@ -81,13 +72,12 @@ $filmData = callService('https://api.us.veezi.com/v1/film', $VeeziAccessToken);
 //$filmDataAsArray = objectToArray($filmData);
 //displayAllFilms($filmDataAsArray);
 //echo "</div>";
+//add_action('trial', 'addAllNewShowTimes', 1);
 
+do_action('trial', $showTimeData);
 add_action( 'init', 'programmatically_create_post', 0 );
 
-
-//////////////////////////////////////////////////////////////////////////
-
-/////////////////////////// functions ////////////////////////////////////
+//======================== functions ========================//
 
 // Test loading data into a showtime
 
@@ -107,19 +97,19 @@ function programatically_flush_posts() {
 
 }
 
-function programmatically_create_post() {
+function programmatically_create_post($title) {
 
     // Initialize the page ID to -1. This indicates no action has been taken.
     $post_id = -1;
 
     // Setup the author, slug, and title for the post
     $author_id = 1;
-    $slug = 'sample-showtime-2';
-    $title = 'Dummy Showtime #2';
+    $slug = 'sample-showtime-20';
+    //$title = 'Dummy Showtime #20';
     $postType = 'showtime';
 
     // If the page doesn't already exist, then create it
-    if( null == get_page_by_title( $title, 'OBJECT', $postType ) ) {
+    if(NULL == (get_page_by_title( $title, 'OBJECT', $postType )) ) {
 
         // Set the post ID so that we know the post was created successfully
         $post_id = wp_insert_post(
@@ -192,7 +182,15 @@ function objectToArray($d) {
 	}
 }
 
-
+function addAllNewShowTimes($showTimeData)
+{
+    $showTimeDataAsArray = objectToArray($showTimeData);
+    for ($i=0; $i< count($showTimeDataAsArray); $i++) {
+        $showTime = new ShowTime;
+        $showTime->assignValues($showTimeDataAsArray, $i);
+        programmatically_create_post($showTime->title);
+    }
+}
 function displayShowTime($showTime)
 {
 	echo "ID:" . $showTime->id . "<br />";
@@ -222,6 +220,7 @@ function displayShowTime($showTime)
 	echo "Attributes:" . $attributesString . "<br />";
 	echo "AudioLanguage:" . $showTime->audioLanguage . "<br />";
 }
+
 
 
 function displayAllShowTimes($dataAsArray)
@@ -282,6 +281,5 @@ function displayAllFilms ($dataAsArray)
 }
 
 
-///////////////////////////////////////////////////////////////////////////
 
 
