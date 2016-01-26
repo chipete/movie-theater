@@ -18,7 +18,7 @@ License: A "Slug" license name e.g. GPL2
  * 		- Contacts veezi to obtain stdObject data for Film and Showtime
  * 		- Converts stdObject to multidimensional arrays
  * 		- Contains functions that store information into classes with Objects film and showtime
- * 		- Has the ability to display all information received from Veezi
+ * 		- Has the ability to display all information received from Veezi (currently commented out)
  */
 
 /*
