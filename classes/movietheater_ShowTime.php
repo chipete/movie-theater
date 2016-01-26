@@ -1,4 +1,4 @@
-<link href="css/films.css" type="text/css" rel="stylesheet" /> <!-- Used mostly for testing purposes at the moment // -->
+<!--<link href="css/films.css" type="text/css" rel="stylesheet" /> --> <!-- Used mostly for testing purposes at the moment // -->
 <?php
 
 /**
@@ -7,7 +7,7 @@
  * Date: 1/23/2016
  * Time: 9:40 AM
  */
-class ShowTime
+class movietheater_ShowTime
 {
 
     var $id; //The unique identifier of this session
@@ -43,28 +43,28 @@ class ShowTime
         //assignValues is designed to streamline the move from
         //VeeziAPI data web session as a multidimensional array
         // to values as ShowTime Class object variables
-        $this->id = $VeeziAPIData[$key]["Id"];
-        $this->filmId = $VeeziAPIData[$key]["FilmId"];
-        $this->filmPackageId = $VeeziAPIData[$key]["FilmPackageId"];
-        $this->title = $VeeziAPIData[$key]["Title"];
-        $this->screenId = $VeeziAPIData[$key]["ScreenId"];
-        $this->seating = $VeeziAPIData[$key]["Seating"];
-        $this->areComplimentariesAllowed = $VeeziAPIData[$key]["AreComplimentariesAllowed"];
-        $this->showType = $VeeziAPIData[$key]["ShowType"];
-        $this->salesVia = $VeeziAPIData[$key]["SalesVia"];
-        $this->status = $VeeziAPIData[$key]["Status"];
-        $this->preShowStartTime = $VeeziAPIData[$key]["PreShowStartTime"];
-        $this->featureStartTime = $VeeziAPIData[$key]["FeatureStartTime"];
-        $this->featureEndTime = $VeeziAPIData[$key]["FeatureEndTime"];
-        $this->cleanupEndTime = $VeeziAPIData[$key]["CleanupEndTime"];
-        $this->seatsAvailable = $VeeziAPIData[$key]["SeatsAvailable"];
-        $this->seatsHeld = $VeeziAPIData[$key]["SeatsHeld"];
-        $this->seatsHouse = $VeeziAPIData[$key]["SeatsHouse"];
-        $this->seatsSold = $VeeziAPIData[$key]["SeatsSold"];
-        $this->filmFormat = $VeeziAPIData[$key]["FilmFormat"];
-        $this->priceCardName = $VeeziAPIData[$key]["PriceCardName"];
-        $this->attributes = $VeeziAPIData[$key]["Attributes"];
-        $this->audioLanguage = $VeeziAPIData[$key]["AudioLanguage"];
+        $this->id = $VeeziAPIData[$key]['Id'];
+        $this->filmId = $VeeziAPIData[$key]['FilmId'];
+        $this->filmPackageId = $VeeziAPIData[$key]['FilmPackageId'];
+        $this->title = $VeeziAPIData[$key]['Title'];
+        $this->screenId = $VeeziAPIData[$key]['ScreenId'];
+        $this->seating = $VeeziAPIData[$key]['Seating'];
+        $this->areComplimentariesAllowed = $VeeziAPIData[$key]['AreComplimentariesAllowed'];
+        $this->showType = $VeeziAPIData[$key]['ShowType'];
+        $this->salesVia = $VeeziAPIData[$key]['SalesVia'];
+        $this->status = $VeeziAPIData[$key]['Status'];
+        $this->preShowStartTime = $VeeziAPIData[$key]['PreShowStartTime'];
+        $this->featureStartTime = $VeeziAPIData[$key]['FeatureStartTime'];
+        $this->featureEndTime = $VeeziAPIData[$key]['FeatureEndTime'];
+        $this->cleanupEndTime = $VeeziAPIData[$key]['CleanupEndTime'];
+        $this->seatsAvailable = $VeeziAPIData[$key]['SeatsAvailable'];
+        $this->seatsHeld = $VeeziAPIData[$key]['SeatsHeld'];
+        $this->seatsHouse = $VeeziAPIData[$key]['SeatsHouse'];
+        $this->seatsSold = $VeeziAPIData[$key]['SeatsSold'];
+        $this->filmFormat = $VeeziAPIData[$key]['FilmFormat'];
+        $this->priceCardName = $VeeziAPIData[$key]['PriceCardName'];
+        $this->attributes = $VeeziAPIData[$key]['Attributes'];
+        $this->audioLanguage = $VeeziAPIData[$key]['AudioLanguage'];
     }
 
 }

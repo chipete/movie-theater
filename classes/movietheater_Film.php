@@ -12,7 +12,7 @@
  * Date: 1/23/2016
  * Time: 9:40 AM
  */
-class Film
+class movietheater_Film
 {
 
     var $id; //The unique identifier of this film
@@ -44,25 +44,25 @@ class Film
         //assignValues is designed to streamline the move from
         //VeeziAPI data film session as a multidimensional array
         // to values as Film Class object variables
-        $this->id = $VeeziAPIData[$key]["Id"];
-        $this->title = $VeeziAPIData[$key]["Title"];
-        $this->shortName = $VeeziAPIData[$key]["ShortName"];
-        $this->synopsis = $VeeziAPIData[$key]["Synopsis"];
-        $this->genre = $VeeziAPIData[$key]["Genre"];
-        $this->signageText = $VeeziAPIData[$key]["SignageText"];
-        $this->distributor = $VeeziAPIData[$key]["Distributor"];
-        $this->openingDate = $VeeziAPIData[$key]["OpeningDate"];
-        $this->rating = $VeeziAPIData[$key]["Rating"];
-        $this->status = $VeeziAPIData[$key]["Status"];
-        $this->content = $VeeziAPIData[$key]["Content"];
-        $this->duration = $VeeziAPIData[$key]["Duration"];
-        $this->displaySequence = $VeeziAPIData[$key]["DisplaySequence"];
-        $this->nationalCode = $VeeziAPIData[$key]["NationalCode"];
-        $this->format = $VeeziAPIData[$key]["Format"];
-        $this->isRestricted = $VeeziAPIData[$key]["IsRestricted"];
-        $this->people = $VeeziAPIData[$key]["People"];
-        $this->audioLanguage = $VeeziAPIData[$key]["AudioLanguage"];
-        $this->governmentFilmTitle = $VeeziAPIData[$key]["GovernmentFilmTitle"];
+        $this->id = $VeeziAPIData[$key]['Id'];
+        $this->title = $VeeziAPIData[$key]['Title'];
+        $this->shortName = $VeeziAPIData[$key]['ShortName'];
+        $this->synopsis = $VeeziAPIData[$key]['Synopsis'];
+        $this->genre = $VeeziAPIData[$key]['Genre'];
+        $this->signageText = $VeeziAPIData[$key]['SignageText'];
+        $this->distributor = $VeeziAPIData[$key]['Distributor'];
+        $this->openingDate = $VeeziAPIData[$key]['OpeningDate'];
+        $this->rating = $VeeziAPIData[$key]['Rating'];
+        $this->status = $VeeziAPIData[$key]['Status'];
+        $this->content = $VeeziAPIData[$key]['Content'];
+        $this->duration = $VeeziAPIData[$key]['Duration'];
+        $this->displaySequence = $VeeziAPIData[$key]['DisplaySequence'];
+        $this->nationalCode = $VeeziAPIData[$key]['NationalCode'];
+        $this->format = $VeeziAPIData[$key]['Format'];
+        $this->isRestricted = $VeeziAPIData[$key]['IsRestricted'];
+        $this->people = $VeeziAPIData[$key]['People'];
+        $this->audioLanguage = $VeeziAPIData[$key]['AudioLanguage'];
+        $this->governmentFilmTitle = $VeeziAPIData[$key]['GovernmentFilmTitle'];
 
     }
 }
