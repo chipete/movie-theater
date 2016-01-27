@@ -71,6 +71,7 @@ function updateAllFilms($filmData)
         $film->assignValues($filmDataAsArray, $i);
         if (($film->status == "Inactive") || ($film->status == "Deleted"))
         {
+            //This has not been fully tested I'm not convinced it is working 100%
             $inactiveFilms = get_posts(array(
                 'numberposts'	=> -1,
                 'post_type'		=> 'film',
@@ -82,6 +83,7 @@ function updateAllFilms($filmData)
                 // Set to False if you want to send them to Trash.
             }
         }
+        //This has not been fully tested I'm not convinced it is working 100%
         elseif (null == get_posts(array(
                 'numberposts'	=> -1,
                 'post_type'		=> 'film',
