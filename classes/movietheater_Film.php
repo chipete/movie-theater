@@ -41,9 +41,6 @@ class movietheater_Film
 
     function assignValues($VeeziAPIData, $key)
     {
-        //assignValues is designed to streamline the move from
-        //VeeziAPI data film session as a multidimensional array
-        // to values as Film Class object variables
         $this->id = $VeeziAPIData[$key]['Id'];
         $this->title = $VeeziAPIData[$key]['Title'];
         $this->shortName = $VeeziAPIData[$key]['ShortName'];
@@ -64,6 +61,33 @@ class movietheater_Film
         $this->audioLanguage = $VeeziAPIData[$key]['AudioLanguage'];
         $this->governmentFilmTitle = $VeeziAPIData[$key]['GovernmentFilmTitle'];
 
+    }
+    function updateFilmFields ($post_id) {
+
+        //film admin info
+        update_field('field_56a10c7a26578', $this->id, $post_id);
+        update_field('field_56a10d337a3d1', $this->shortName, $post_id);
+        update_field('field_56a111df1ffab', $this->status, $post_id);
+        update_field('field_56a118f80afd1', $this->openingDate, $post_id);
+
+        //film veezi info
+        update_field('field_56a10e0618f4a', $this->synopsis, $post_id);
+        update_field('field_56a10e1918f4b', $this->genre, $post_id);
+        update_field('field_56a10e3118f4c', $this->rating, $post_id);
+        update_field('field_56a10eb518f4e', $this->duration, $post_id);
+        update_field('field_56a11844f6114', $this->distributor, $post_id);
+        update_field('field_56a10eca18f4f', $this->format, $post_id);
+        update_field('field_56a10ef718f50', $this->audioLanguage, $post_id);
+        //So director and actors needs to be added wtih $this->people['something']['something']
+        update_field('field_56a119ad9561d', $this->isRestricted, $post_id); //note this field is content advisory
+
+        /*
+        //There is currently no fields for these. Included here for possible future implementation
+        update_field('', $this->signageText, $post_id);
+        update_field('', $this->displaySequence, $post_id);
+        update_field('', $this->nationalCode, $post_id);
+        update_field('', $this->governmentFilmTitle, $post_id);
+        */
     }
 }
 ?>

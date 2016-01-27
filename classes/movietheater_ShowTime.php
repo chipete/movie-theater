@@ -66,30 +66,6 @@ class movietheater_ShowTime
         $this->attributes = $VeeziAPIData[$key]['Attributes'];
         $this->audioLanguage = $VeeziAPIData[$key]['AudioLanguage'];
     }
-    function makeNewPost($title, $postType) {
-
-        // Setup the author
-        $author_id = 1;
-
-        // If the page doesn't already exist, then create it
-        //if(NULL == (get_page_by_title( $title, 'OBJECT', $postType )) ) {
-
-        $post_id = wp_insert_post(
-            array(
-                'comment_status'	=>	'closed',
-                'ping_status'		=>	'closed',
-                'post_author'		=>	$author_id,
-                //'post_name'		=>	$slug,
-                'post_title'	=>	$title,
-                'post_status'	=>	'publish',
-                'post_type'		=>	$postType
-
-            )
-        );
-
-        return $post_id;
-        //} endif
-    }
 
     function updateShowtimeFields ($post_id) {
 
