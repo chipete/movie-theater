@@ -4,7 +4,7 @@
 Plugin Name: Movie Theater
 Plugin URI: http://lightmarkcreative.com/movietheater
 Description: Custom post type “films” and “showtimes” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.5.2
+Version: 1.5.3
 Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: GPL2
@@ -59,7 +59,7 @@ function runMovieTheater() {
     deleteAllPosts('Showtime');
     //if all the showtimes have been deleted, add the new ones
     if(NULL == get_Posts(array('post_type'=> 'Showtime')) ) {
-        addAllNewShowTimes($showTimeData);
+    addAllNewShowTimes($showTimeData);
     }
 }
 
@@ -71,13 +71,23 @@ function updateAllFilms($filmData)
         $film->assignValues($filmDataAsArray, $i);
         if (($film->status == "Inactive") || ($film->status == "Deleted"))
         {
-            $inactiveFilms = get_posts( array( 'post_type' => 'film', 'field_56a10c7a26578' => $film->id) );
+            $inactiveFilms = get_posts(array(
+                'numberposts'	=> -1,
+                'post_type'		=> 'film',
+                'meta_key'		=> 'id',
+                'meta_value'	=> $film->id
+            ));
             foreach( $inactiveFilms as $mypost ) {
                 wp_delete_post($mypost->ID, true);
                 // Set to False if you want to send them to Trash.
             }
         }
-        elseif ($film->id != get_posts( array( 'post_type' => 'film', 'field_56a10c7a26578' => $film->id, 'posts_per_page' => 1)))
+        elseif (null == get_posts(array(
+                'numberposts'	=> -1,
+                'post_type'		=> 'film',
+                'meta_key'		=> 'id',
+                'meta_value'	=> $film->id
+            )))
         {
             $post_id = makeNewPost($film->title, 'film'); //we should ultimately change the post type to Film rather than film
             $film->updateFilmFields($post_id);
