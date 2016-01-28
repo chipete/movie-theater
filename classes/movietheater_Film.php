@@ -78,7 +78,8 @@ class movietheater_Film
         update_field('field_56a11844f6114', $this->distributor, $post_id);
         update_field('field_56a10eca18f4f', $this->format, $post_id);
         update_field('field_56a10ef718f50', $this->audioLanguage, $post_id);
-        //So director and actors needs to be added wtih $this->people['something']['something']
+        update_field('field_56a1185ff6115', $this->getPeople($this->people, 'Director'), $post_id); //this field is director
+        update_field('field_56a11869f6116', $this->getPeople($this->people, 'Actor'), $post_id); //this field is actors
         update_field('field_56a119ad9561d', $this->isRestricted, $post_id); //note this field is content advisory
 
         /*
@@ -88,6 +89,24 @@ class movietheater_Film
         update_field('', $this->nationalCode, $post_id);
         update_field('', $this->governmentFilmTitle, $post_id);
         */
+    }
+
+    function getPeople ($array, $role) {
+        //helper function getPeople ($role) that returns a comma seperated list of people of a certain role
+        $people = '';
+
+        foreach ($array as $value) {
+
+            if ($role == ''. $value['Role']) {
+                //add a comma if more than one person in role
+                if ($people != '') {
+                    $people .= ', ';
+                }
+                $people .= $value['FirstName'] . ' ' . $value['LastName'];
+            }
+        }
+
+        return $people;
     }
 }
 ?>

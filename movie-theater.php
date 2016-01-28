@@ -4,7 +4,7 @@
 Plugin Name: Movie Theater
 Plugin URI: http://lightmarkcreative.com/movietheater
 Description: Custom post type “films” and “showtimes” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.5.3
+Version: 1.6.0
 Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: GPL2
@@ -13,7 +13,6 @@ License: GPL2
 
 //=========================== Includes =======================//
 
-//require_once ('inc/cron-timeout-fix.php');
 include('classes/movietheater_ShowTime.php');
 include('classes/movietheater_Film.php');
 
@@ -55,8 +54,10 @@ function runMovieTheater() {
 
     $showTimeData = callService('https://api.us.veezi.com/v1/websession', $VeeziAccessToken);
     $filmData = callService('https://api.us.veezi.com/v1/film', $VeeziAccessToken);
+
     updateAllFilms($filmData);
     deleteAllPosts('Showtime');
+
     //if all the showtimes have been deleted, add the new ones
     if(NULL == get_Posts(array('post_type'=> 'Showtime')) ) {
     addAllNewShowTimes($showTimeData);
@@ -71,7 +72,6 @@ function updateAllFilms($filmData)
         $film->assignValues($filmDataAsArray, $i);
         if (($film->status == "Inactive") || ($film->status == "Deleted"))
         {
-            //This has not been fully tested I'm not convinced it is working 100%
             $inactiveFilms = get_posts(array(
                 'numberposts'	=> -1,
                 'post_type'		=> 'film',
@@ -83,7 +83,6 @@ function updateAllFilms($filmData)
                 // Set to False if you want to send them to Trash.
             }
         }
-        //This has not been fully tested I'm not convinced it is working 100%
         elseif (null == get_posts(array(
                 'numberposts'	=> -1,
                 'post_type'		=> 'film',
@@ -100,53 +99,51 @@ function updateAllFilms($filmData)
 }
 
 
+function deleteAllPosts($postType) {
+
+    // deletes all posts within a postType
+    $mycustomposts = get_posts( array( 'post_type' => $postType, 'numberposts' => -1) );
+    foreach( $mycustomposts as $mypost ) {
+        wp_delete_post($mypost->ID, true);
+        // Set to False if you want to send them to Trash.
+    }
+}
+
+
 function addAllNewShowTimes($showTimeData)
 {
     $showTimeDataAsArray = objectToArray($showTimeData);
+
     for ($i=0; $i< count($showTimeDataAsArray); $i++) {
+
         $showTime = new movietheater_ShowTime;
         $showTime->assignValues($showTimeDataAsArray, $i);
+
         $post_id = makeNewPost($showTime->title, 'Showtime');
         $showTime->updateShowtimeFields($post_id);
-        //if ($showTime->filmId != get_posts( array( 'post_type' => 'Film', 'meta_key' => 'filmId', 'posts_per_page' => 1)) ) {
-        //$Film->makeNewFilm($showTime->filmId);
-        //}
     }
 }
 
 
 function makeNewPost($title, $postType) {
+//helper function to add a new post
 
     // Setup the author
     $author_id = 1;
-
-    // If the page doesn't already exist, then create it
-    //if(NULL == (get_page_by_title( $title, 'OBJECT', $postType )) ) {
 
     $post_id = wp_insert_post(
         array(
             'comment_status'	=>	'closed',
             'ping_status'		=>	'closed',
             'post_author'		=>	$author_id,
-            //'post_name'		=>	$slug,
             'post_title'	=>	$title,
             'post_status'	=>	'publish',
             'post_type'		=>	$postType
-
         )
     );
 
     return $post_id;
-    //} endif
 }
 
-function deleteAllPosts($postType) {
 
-    // deletes all posts within a postType, 5000 at a time
-    $mycustomposts = get_posts( array( 'post_type' => $postType, 'posts_per_page' => 5000) );
-    foreach( $mycustomposts as $mypost ) {
-        wp_delete_post($mypost->ID, true);
-        // Set to False if you want to send them to Trash.
-    }
-}
 
