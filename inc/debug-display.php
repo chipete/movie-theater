@@ -10,13 +10,13 @@
 
 echo "<div id='container'>";
 echo "<div class='generalTitle'> All Show Times </div>";
-$showTimeDataAsArray = objectToArray($showTimeData);
+$showTimeDataAsArray = object_to_array($session_data);
 displayAllShowTimes($showTimeDataAsArray);
 echo "</div>";
 echo "<div id='container'>";
 echo "<div class='generalTitle'> All Films </div>";
 $film = new Film;
-$filmDataAsArray = objectToArray($filmData);
+$filmDataAsArray = object_to_array($film_data);
 displayAllFilms($filmDataAsArray);
 echo "</div>";
 
@@ -54,8 +54,8 @@ function displayShowTime($showTime)
 function displayAllShowTimes($dataAsArray)
 {
     for ($i=0; $i< count($dataAsArray); $i++) {
-        $showTime = new movietheater_ShowTime;
-        $showTime->assignValues($dataAsArray, $i);
+        $showTime = new WPMT_Session;
+        $showTime->assign_values($dataAsArray, $i);
         echo "<div class='showTimeTitle'>" . $showTime->title . "</div>";
         echo "<div class='showTimeBody'>";
         displayShowTime($showTime);
@@ -99,8 +99,8 @@ function displayFilm($film)
 function displayAllFilms($dataAsArray)
 {
     for ($i=0; $i< count($dataAsArray); $i++) {
-        $film = new movietheater_Film;
-        $film->assignValues($dataAsArray, $i);
+        $film = new WPMT_Film;
+        $film->assign_values($dataAsArray, $i);
         echo "<div class='filmTitle'>" . $film->title . "</div>";
         echo "<div class='filmBody'>";
         displayFilm($film);

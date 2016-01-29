@@ -36,7 +36,7 @@
  */
 
 
-function callService($url, $headers) {
+function call_service($url, $headers) {
     // Leave $url alone, and treat other arguments as headers
     $headers = array_slice(func_get_args(), 1);
     // Create context
@@ -63,7 +63,7 @@ function callService($url, $headers) {
  * requires array data
 */
 
-function objectToArray($d) {
+function object_to_array($d) {
     if (is_object($d)) {
         // Gets the properties of the given object
         // with get_object_vars function
