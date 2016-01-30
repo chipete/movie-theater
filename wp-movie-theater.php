@@ -4,7 +4,7 @@
 Plugin Name: WP Movie Theater
 Plugin URI: https://github.com/chipete/wp-movie-theater
 Description: Custom post type “films” and “sessions” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.7.0
+Version: 1.7.1
 Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: GPL2
@@ -49,7 +49,7 @@ function wpmt_deactivation() {
 
 function wpmt_run() {
 
-    $my_token           = "PxWHQDAzZEmWZ7s2HZYCCA2";
+    $my_token           = esc_attr( get_option( 'wpmt_veezi_token' ) );
     $veezi_access_token = 'VeeziAccessToken: ' . $my_token;
     $session_data       = call_service( 'https://api.us.veezi.com/v1/websession', $veezi_access_token );
     $film_data          = call_service( 'https://api.us.veezi.com/v1/film', $veezi_access_token );

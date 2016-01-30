@@ -1,83 +1,43 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Chris
+ * User: Chris, Ryan
  * Date: 1/29/16
  * Time: 8:43 AM
  */
 
 
-// ------------------------------------------------------------------
-// Add all your sections, fields and settings during admin_init
-// ------------------------------------------------------------------
-//
-add_action( 'admin_menu', 'wpmt_menu' );
-add_action( 'admin_init', 'wpmt_settings_api_init' );
-function wpmt_menu() {
-    //add_options_page( $page_title, $menu_title, $capability, $menu_slug, $function);
-    add_options_page(
-        'WP Movie Theater Control Panel',
-        'WP Movie Theater CP',
-        'manage_options',
-        'movie',
-        'wpmt_admin_options'
-    );
+add_action( 'admin_menu', 'wpmt_admin_menu' );
+function wpmt_admin_menu() {
+    add_options_page( 'WP_Movie_Theater', 'WP Movie Theater', 'manage_options', 'WP_Movie_Theater', 'wpmt_options_page' );
 }
-function wpmt_admin_options()
-{
-    do_settings_sections( 'wpmt_settings' );
+
+
+add_action( 'admin_init', 'wpmt_admin_menu_init' );
+function wpmt_admin_menu_init() {
+    register_setting( 'wpmt_settings_group', 'wpmt_veezi_token' );
+    add_settings_section( 'veezi_key_section', 'Veezi Key', 'veezi_key_section_callback', 'WP_Movie_Theater' );
+    add_settings_field( 'veezi_key_field', 'Enter Your Veezi Key', 'veezi_key_field_callback', 'WP_Movie_Theater', 'veezi_key_section' );
 }
-function wpmt_settings_api_init() {
-    // Add the section to reading settings so we can add our
-    // fields to it
-    add_settings_section(
-        'wpmt_advanced_options',
-        'Movie Theater Advanced Settings',
-        'eg_setting_section_callback_function',
-        'wpmt_settings'
-    );
-    // Add the field with the names and function to use for our new
-    // settings, put it in our new section
-    add_settings_field(
-        'eg_wpmt_checkbox',
-        'Test Checkbox',
-        'eg_wpmt_checkbox_setting_callback_function',
-        'wpmt_settings',
-        'wpmt_advanced_options'
-    );
-    add_settings_field(
-        'eg_wpmt_text',
-        'Test text field',
-        'eg_wpmt_text_setting_callback_function',
-        'wpmt_settings',
-        'wpmt_advanced_options'
-    );
-    // Register our setting so that $_POST handling is done for us and
-    // our callback function just has to echo the <input>
-    register_setting( 'wpmt_settings', 'eg_setting_name' );
-} // eg_settings_api_init()
-// ------------------------------------------------------------------
-// Settings section callback function
-// ------------------------------------------------------------------
-//
-// This function is needed if we added a new section. This function
-// will be run at the start of our section
-//
-function eg_setting_section_callback_function() {
-    echo '<p>Below are some amazing options I know you are going to want to mess with</p>';
+
+function veezi_key_section_callback() {
+    echo 'Your Veezi API key can be found in your Veezi account: https://my.us.veezi.com/Api/Index';
 }
-// ------------------------------------------------------------------
-// Callback function for our example setting
-// ------------------------------------------------------------------
-//
-// creates a checkbox true/false option. Other types are surely possible
-//
-function eg_wpmt_checkbox_setting_callback_function() {
-    echo '<input name="eg_wpmt_checkbox" id="eg_wpmt_checkbox" type="checkbox" value="1" class="code" ' . checked( 1, get_option( 'eg_wpmt_checkbox' ), false ) . ' /> Explanation text';
+
+function veezi_key_field_callback() {
+    $setting = esc_attr( get_option( 'wpmt_veezi_token' ) );
+    echo "<input type='text' size='28' name='wpmt_veezi_token' value='$setting' />";
 }
-function eg_wpmt_text_setting_callback_function() {
-    echo '<input name="eg_wpmt_text" id="eg_wpmt_text" type="text" value="fill me out" /> Explanation text';
-    //since this is our last field time for the submit button!
-    echo '<br /> <br />';
-    echo '<input type="submit" value="Save Changes" />';
+function wpmt_options_page() {
+    ?>
+    <div class="wrap">
+        <h2>My Plugin Options</h2>
+        <form action="options.php" method="POST">
+            <?php settings_fields( 'wpmt_settings_group' ); ?>
+            <?php do_settings_sections( 'WP_Movie_Theater' ); ?>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    <?php
 }
+?>
