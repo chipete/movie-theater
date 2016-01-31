@@ -4,7 +4,7 @@
 Plugin Name: WP Movie Theater
 Plugin URI: https://github.com/chipete/wp-movie-theater
 Description: Custom post type “films” and “sessions” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.7.1
+Version: 1.7.2
 Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: GPL2
