@@ -1,3 +1,24 @@
+<head>
+    <script>
+        wpmt_option_action_in_progress = function(wpmt_progress_id, button_id) {
+            document.getElementById(wpmt_progress_id).innerHTML = '<img src="/wp-content/plugins/movie-theater/wpmt_indicator.gif" style=' + "'width: 15px; height: 15px;'" + '" /> Updating in Progress... (this may take a few minutes)';
+            document.getElementById(button_id).style.display = 'none';
+            if (button_id == "wpmt_manual_update") {
+                document.getElementById('wpmt_manual_delete_all_posts').disabled = true;
+                document.getElementById('wpmt_manual_reset').disabled = true;
+            }
+            if (button_id == "wpmt_manual_reset") {
+                document.getElementById('wpmt_manual_delete_all_posts').disabled = true;
+                document.getElementById('wpmt_manual_update').disabled = true;
+            }
+            if (button_id == "wpmt_manual_delete_all_posts") {
+                document.getElementById('wpmt_manual_reset').disabled = true;
+                document.getElementById('wpmt_manual_update').disabled = true;
+            }
+
+        }
+    </script>
+</head>
 <?php
 /**
  * Created by PhpStorm.
@@ -64,15 +85,15 @@ function wpmt_veezi_key_field_callback() {
     echo '<input type="submit" name="submit" id="submit" class="button button-primary" value="' . $wpmt_veezi_token_submit_button_value . '"  />';
 }
 function wpmt_manual_reset_field_callback() {
-    echo "<input type='submit' name='wpmt_manual_reset' Onclick=\"document.getElementById('wpmt_manual_reset_progress').innerHTML = 'Updating in Progress...'\" value='Reset Films'/> ";
+    echo "<input type='submit' name='wpmt_manual_reset' id='wpmt_manual_reset' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_reset_progress"' . ", " . '"wpmt_manual_reset"' . ")' value='Reset Films'/> ";
     echo "<span id='wpmt_manual_reset_progress'></span>";
 }
 function wpmt_manual_update_field_callback() {
-    echo "<input type='submit' name='wpmt_manual_update' Onclick=\"document.getElementById('wpmt_manual_update_progress').innerHTML = 'Updating in Progress...'\" value='Manual Update'/> ";
+    echo "<input type='submit' name='wpmt_manual_update' id='wpmt_manual_update' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_update_progress"' . ", " . '"wpmt_manual_update"' . ")' value='Manual Update'/> ";
     echo "<span id='wpmt_manual_update_progress'></span>";
 }
 function wpmt_delete_all_posts_field_callback() {
-        echo "<input type='submit' name='wpmt_manual_delete_all_posts' Onclick=\"document.getElementById('wpmt_manual_delete_all_posts_progress').innerHTML = 'Updating in Progress...'\" value='Delete All Film Posts'/> ";
+        echo "<input type='submit' name='wpmt_manual_delete_all_posts' id='wpmt_manual_delete_all_posts' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_delete_all_posts_progress"' . ", " . '"wpmt_manual_delete_all_posts"' . ")' value='Delete All Film Posts'/> ";
         echo "<span id='wpmt_manual_delete_all_posts_progress'></span>";
 }
 
@@ -82,8 +103,6 @@ function wpmt_options_page() {
     <div class="wrap">
         <h2>My Plugin Options</h2>
         <form action="options.php" method="POST">
-
-
             <?php settings_fields( 'wpmt_settings_group' ); ?>
             <?php do_settings_sections( 'WP_Movie_Theater' ); ?>
         </form>
