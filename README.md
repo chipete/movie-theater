@@ -4,7 +4,7 @@ This plugin is in ALPHA development. Not fully functional. Please do not downloa
 
 requires "Advanced Custom Fields" plugin
 
-As of 1.3 recommended to install "WP Control" to force cron jobs to run (and therefore test the add/remove films & sessions)
+As of 1.3 recommended to install "WP Control" to force cron jobs to run (and therefore test the add/remove performances & sessions)
 
 
 Good example of complex meta_query
