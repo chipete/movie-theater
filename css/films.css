@@ -8,7 +8,7 @@ body {
     float: left;
     padding: 5px;
 }
-.generalTitle {
+.general_title {
     font-weight: bold;
     font-family: Calibri;
     font-size: 2em;
@@ -21,7 +21,7 @@ body {
     padding: 15px;
 }
 
-.showTimeTitle {
+.wpmt_session_title {
     font-weight: bold;
     font-family: Calibri;
     font-size: 1.5em;
@@ -33,7 +33,7 @@ body {
     margin:auto;
     padding: 15px;
 }
-.showTimeBody {
+.wpmt_session_body {
     font-weight: 100;
     font-family: Calibri;
     font-size: 1em;
@@ -44,7 +44,7 @@ body {
     margin:auto;
     padding: 35px;
 }
-.filmTitle {
+.wpmt_film_title {
     font-weight: bold;
     font-family: Calibri;
     font-size: 1.5em;
@@ -56,7 +56,7 @@ body {
     margin:auto;
     padding: 15px;
 }
-.filmBody {
+.wpmt_film_body {
     font-weight: 100;
     font-family: Calibri;
     font-size: 1em;

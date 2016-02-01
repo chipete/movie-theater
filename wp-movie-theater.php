@@ -153,4 +153,17 @@ function wpmt_add_post( $title, $post_type ) {
 }
 
 
+function wpmt_display_films_shortcode( $atts, $content = null ) {
 
+    //global $post;
+
+    ob_start();
+
+    require( 'inc/display-films.php' );
+
+    $content = ob_get_clean();
+
+    return $content;
+
+}
+add_shortcode( 'wpmt_films', 'wpmt_display_films_shortcode' );

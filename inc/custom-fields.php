@@ -122,7 +122,7 @@ if(function_exists("register_field_group"))
             'position' => 'normal',
             'layout' => 'no_box',
             'hide_on_screen' => array (
-                0 => 'permalink',
+                //0 => 'permalink',
                 1 => 'the_content',
                 2 => 'excerpt',
                 3 => 'custom_fields',
@@ -221,7 +221,7 @@ if(function_exists("register_field_group"))
             'position' => 'normal',
             'layout' => 'no_box',
             'hide_on_screen' => array (
-                0 => 'permalink',
+                //0 => 'permalink',
                 1 => 'the_content',
                 2 => 'excerpt',
                 3 => 'custom_fields',
@@ -382,7 +382,7 @@ if(function_exists("register_field_group"))
             'position' => 'normal',
             'layout' => 'no_box',
             'hide_on_screen' => array (
-                0 => 'permalink',
+                //0 => 'permalink',
                 1 => 'the_content',
                 2 => 'excerpt',
                 3 => 'custom_fields',
