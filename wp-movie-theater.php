@@ -4,7 +4,7 @@
 Plugin Name: WP Movie Theater
 Plugin URI: https://github.com/chipete/wp-movie-theater
 Description: Custom post type “films” and “sessions” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server xml/json feed.
-Version: 1.7.3
+Version: 1.7.4
 Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: GPL2
@@ -21,7 +21,7 @@ require_once ( 'inc/custom-post-types.php' );
 require_once ( 'inc/custom-fields.php' );
 require_once ( 'inc/load-ticket-servers.php' );
 require_once ( 'inc/settings-panel.php' );
-
+require_once ( 'inc/display-film.php' );
 
 //=========================== Actions & Filters ==============//
 
@@ -153,17 +153,49 @@ function wpmt_add_post( $title, $post_type ) {
 }
 
 
-function wpmt_display_films_shortcode( $atts, $content = null ) {
+function wpmt_display_film_shortcode( $content ) {
 
-    //global $post;
+    global $post;
 
-    ob_start();
+    if ( get_post_type() == 'wpmt_film' ) {
 
-    require( 'inc/display-films.php' );
-
-    $content = ob_get_clean();
+        wpmt_display_film();
+    }
 
     return $content;
 
 }
+
+add_filter( 'the_content', 'wpmt_display_film_shortcode' );
+
+
+function wpmt_display_films_shortcode( $atts, $content = null ) {
+
+    $args = array(
+        'post_type'         => 'WPMT_Film',
+        'posts_per_page'    => '-1',
+        'meta_key'          => 'wpmt_film_opening_date',
+        'orderby'           => 'meta_value',
+        'order'             => 'ASC'
+    );
+
+    $my_query = new WP_Query( $args );
+
+    if ( $my_query->have_posts() ) {
+
+        while ( $my_query->have_posts() ) {
+            $my_query->the_post();
+
+            wpmt_display_film();
+        }
+    }
+
+    return $content;
+
+}
+
 add_shortcode( 'wpmt_films', 'wpmt_display_films_shortcode' );
+
+
+
+

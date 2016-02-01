@@ -37,6 +37,7 @@ class WPMT_Session
     var $price_card_name;               //The price card is a set of ticket prices that can be applied to a session. For example a cinema may have a price card for matinee sessions and another for their evening sessions. This is the name or the price card for this session.
     var $attributes;                    //The attribute codes assigned to this session. These attribute codes can be matched against attributes found using the Attribute API
     var $audio_language;                //The audio language assigned to this session. This may differ from the original language of the film. This is not able to be set
+    var $ticket_url;                    //extra property URL which contains the URL that can be used to purchase tickets to that session if Veezi Web Ticketing is enabled
 
     function assign_values( $VeeziAPIData, $key )
     {
@@ -65,6 +66,7 @@ class WPMT_Session
         $this->price_card_name              = $VeeziAPIData[$key]['PriceCardName'];
         $this->attributes                   = $VeeziAPIData[$key]['Attributes'];
         $this->audio_language               = $VeeziAPIData[$key]['AudioLanguage'];
+        $this->ticket_url                   = $VeeziAPIData[$key]['Url'];
     }
 
     function update_fields ( $post_id ) {
@@ -76,6 +78,7 @@ class WPMT_Session
         update_field( 'field_56a126f7938c4', $this->status, $post_id );
         update_field( 'field_56ab9c1f2bc2c', $this->screen_id, $post_id );
         update_field( 'field_56a126bb938c3', $this->seats_available, $post_id );
+        update_field( 'field_56af703f7a2ba', $this->ticket_url, $post_id );
     }
 
 } // end class
