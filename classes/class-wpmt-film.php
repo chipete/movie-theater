@@ -92,6 +92,53 @@ class WPMT_Film
         */
     }
 
+
+    function update_external_fields ( $post_id ) {
+
+        $title      = get_the_title( $post_id );
+
+        /*
+        $bom        = new WPMT_Bom();
+        $bom_data   = $bom->get_movie_info( $title );
+
+        $imdb       = new WPMT_Imdb();
+        $imdb_data  = $imdb->get_movie_info( $title );
+        */
+        $yt         = new WPMT_Youtube();
+        $yt_data    = $yt->get_youtube_url( 'WPMT_Film', $title );
+        //$yt_data    = $title;
+
+
+        if ( $yt_data ) {
+            update_field( 'field_56a1178eb02a7', $yt_data, $post_id ); //youtube_url
+        }
+        /*
+        if ( $bom_data ) {
+
+            update_field( 'field_56a10c7a26578', $bom_data['poster'], $post_id );     //poster
+            update_field( 'field_56a10c7a26578', $bom_data['image640'], $post_id );     //image
+        }
+
+        if ( $imdb_data ) {
+
+            if ( get_field( 'wpmt_film_synopsis' ) == '' ) {
+                update_field( 'field_56a10c7a26578', $imdb_data['plot'], $post_id ); //synopsis
+            }
+
+            if ( get_field( 'wpmt_film_genre' ) == '' ) {
+                update_field( 'field_56a10c7a26578', $imdb_data['genre[0]'], $post_id ); //genre
+            }
+
+            if ( get_field( 'wpmt_film_directors' ) == '' ) {
+                update_field( 'field_56a10c7a26578', $imdb_data['director'], $post_id ); //director
+            }
+
+        }//end if
+        */
+
+    } //end function
+
+
     function get_veezi_people ($array, $role ) {
         //helper function getPeople ($role) that returns a comma seperated list of people of a certain role
 

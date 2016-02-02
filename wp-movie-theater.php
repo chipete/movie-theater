@@ -15,6 +15,9 @@ License: GPL2
 require_once ( 'classes/class-wpmt-session.php' );
 require_once ( 'classes/class-wpmt-film.php' );
 require_once ( 'classes/class-wpmt-performance.php' );
+//require_once ( 'classes/class-wpmt-bom.php' );
+//require_once ( 'classes/class-wpmt-imdb.php' );
+require_once ( 'classes/class-wpmt-youtube.php' );
 
 require_once ( 'inc/custom-post-types.php' );
 require_once ( 'inc/custom-fields.php' );
@@ -60,7 +63,7 @@ function wpmt_run() {
     //wpmt_delete_all_posts( 'WPMT_Film' );
 
     //2. if all sessions have been deleted, add the new ones
-    if ( NULL == get_posts(array('post_type'=> 'WPMT_Session')) ) {
+    if ( NULL == get_posts( array( 'post_type'=> 'WPMT_Session' ) ) ) {
         wpmt_add_sessions( $session_data );
     }
 
@@ -73,67 +76,67 @@ function wpmt_update_posts( $post_data ) {
 
     $post_data_as_array = object_to_array( $post_data );
 
-    for ( $i = 0; $i < count($post_data_as_array); $i++ ) {
+    for ( $i = 0; $i < count( $post_data_as_array ); $i++ ) {
 
         // do not import festival films
-        if ($post_data_as_array[$i]["Genre"] != "Festival") {
+        if ( $post_data_as_array[$i]["Genre"] != "Festival" ) {
 
             // if the format is 'not a film' and it's not a documentary, then make a performance
-            if ($post_data_as_array[$i]["Format"] == "Not a Film" && $post_data_as_array[$i]["Genre"] != "Documentary") {
+            if ( $post_data_as_array[$i]["Format"] == "Not a Film" && $post_data_as_array[$i]["Genre"] != "Documentary" ) {
                 $performance = new WPMT_Performance;
-                $performance->assign_values($post_data_as_array, $i);
+                $performance->assign_values( $post_data_as_array, $i );
 
-                if (($performance->status == "Inactive") || ($performance->status == "Deleted")) {
+                if ( ( $performance->status == "Inactive" ) || ( $performance->status == "Deleted" ) ) {
 
-                    $inactive_performances = get_posts(array(
-                        'posts_per_page' => -1,
-                        'post_type' => 'WPMT_Performance',
-                        'meta_key' => 'wpmt_performance_id',
-                        'meta_value' => $performance->id
-                    ));
-                    foreach ($inactive_performances as $my_post) {
-                        wp_delete_post($my_post->ID, true);
+                    $inactive_performances = get_posts( array(
+                        'posts_per_page'    => -1,
+                        'post_type'         => 'WPMT_Performance',
+                        'meta_key'          => 'wpmt_performance_id',
+                        'meta_value'        => $performance->id
+                    ) );
+                    foreach ( $inactive_performances as $my_post ) {
+                        wp_delete_post( $my_post->ID, true );
                         // Set to False if you want to send them to Trash.
                     }
 
-                } elseif (null == get_posts(array(
-                        'posts_per_page' => -1,
-                        'post_type' => 'WPMT_Performance',
-                        'meta_key' => 'wpmt_performance_id',
-                        'meta_value' => $performance->id
-                    ))
+                } elseif ( null == get_posts( array(
+                        'posts_per_page'    => -1,
+                        'post_type'         => 'WPMT_Performance',
+                        'meta_key'          => 'wpmt_performance_id',
+                        'meta_value'        => $performance->id
+                    ) )
                 ) {
-                    $post_id = wpmt_add_post($performance->title, 'WPMT_Performance');
-                    $performance->update_fields($post_id);
+                    $post_id = wpmt_add_post( $performance->title, 'WPMT_Performance' );
+                    $performance->update_fields( $post_id );
                 }
 
             // if the format or genre is anything else, make a film
             } else {
                 $film = new WPMT_Film;
-                $film->assign_values($post_data_as_array, $i);
+                $film->assign_values( $post_data_as_array, $i );
 
-                if (($film->status == "Inactive") || ($film->status == "Deleted")) {
+                if ( $film->status == "Inactive"  || $film->status == "Deleted" ) {
 
-                    $inactive_films = get_posts(array(
-                        'posts_per_page' => -1,
-                        'post_type' => 'WPMT_Film',
-                        'meta_key' => 'wpmt_film_id',
-                        'meta_value' => $film->id
-                    ));
-                    foreach ($inactive_films as $my_post) {
-                        wp_delete_post($my_post->ID, true);
+                    $inactive_films = get_posts( array(
+                        'posts_per_page'    => -1,
+                        'post_type'         => 'WPMT_Film',
+                        'meta_key'          => 'wpmt_film_id',
+                        'meta_value'        => $film->id
+                    ) );
+                    foreach ( $inactive_films as $my_post ) {
+                        wp_delete_post( $my_post->ID, true );
                         // Set to False if you want to send them to Trash.
                     }
 
-                } elseif (null == get_posts(array(
-                        'posts_per_page' => -1,
-                        'post_type' => 'WPMT_Film',
-                        'meta_key' => 'wpmt_film_id',
-                        'meta_value' => $film->id
-                    ))
-                ) {
-                    $post_id = wpmt_add_post($film->title, 'WPMT_Film');
-                    $film->update_fields($post_id);
+                } elseif ( null == get_posts( array(
+                        'posts_per_page'    => -1,
+                        'post_type'         => 'WPMT_Film',
+                        'meta_key'          => 'wpmt_film_id',
+                        'meta_value'        => $film->id
+                    ) ) ) {
+                    $post_id = wpmt_add_post( $film->title, 'WPMT_Film' );
+                    $film->update_fields( $post_id );
+	                $film->update_external_fields( $post_id );
                 }
 
             }//end else

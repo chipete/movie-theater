@@ -1,7 +1,7 @@
 <head>
     <script>
         wpmt_option_action_in_progress = function(wpmt_progress_id, button_id) {
-            document.getElementById(wpmt_progress_id).innerHTML = '<img src="/wp-content/plugins/movie-theater/images/wpmt_indicator.gif" style=' + "'width: 15px; height: 15px;'" + '" /> In Progress... (this may take a few minutes)';
+            document.getElementById(wpmt_progress_id).innerHTML = '<img src="<?php echo plugins_url('../images/wpmt_indicator.gif', __FILE__); ?>" style=' + "'width: 15px; height: 15px;'" + '" /> In Progress... (this may take a few minutes)';
             document.getElementById(button_id).style.display = 'none';
             if (button_id == "wpmt_manual_update") {
                 document.getElementById('wpmt_manual_delete_all_posts').disabled = true;
@@ -103,7 +103,7 @@ function wpmt_delete_all_posts_field_callback() {
 function wpmt_options_page() {
     ?>
     <div class="wrap">
-        <h2>My Plugin Options</h2>
+        <h2>WP Movie Theater Options</h2>
         <form action="options.php" method="POST">
             <?php settings_fields( 'wpmt_settings_group' ); ?>
             <?php do_settings_sections( 'WP_Movie_Theater' ); ?>
