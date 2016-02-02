@@ -61,7 +61,12 @@ function wpmt_admin_menu_init() {
         register_setting( 'wpmt_settings_group', 'wpmt_veezi_token' );
         add_settings_field( 'wpmt_veezi_key_field', 'Enter Your Veezi Key', 'wpmt_veezi_key_field_callback', 'WP_Movie_Theater', 'wpmt_veezi_key_section' );
 
-    add_settings_section( 'wpmt_manual_controls_section', 'Manually Control WP Movie Theater ', 'wpmt_manual_controls_section_callback', 'WP_Movie_Theater' );
+    add_settings_section( 'wpmt_veezi_custom_filters_section', 'Change and Add Filters', 'wpmt_veezi_custom_filters_callback', 'WP_Movie_Theater' );
+    register_setting( 'wpmt_settings_group', 'wpmt_overwrite_format' );
+        add_settings_field( 'wpmt_import_format_field', 'Overwrite format', 'wpmt_import_format_field_callback', 'WP_Movie_Theater', 'wpmt_veezi_custom_filters_section' );
+
+
+    add_settings_section( 'wpmt_manual_controls_section', 'Manually Run WP Movie Theater ', 'wpmt_manual_controls_section_callback', 'WP_Movie_Theater' );
         add_settings_field( 'wpmt_manual_update_field', 'Update film and performance posts', 'wpmt_manual_update_field_callback', 'WP_Movie_Theater', 'wpmt_manual_controls_section' );
         add_settings_field( 'wpmt_delete_all_posts_field', 'Delete all film and performance posts', 'wpmt_delete_all_posts_field_callback', 'WP_Movie_Theater', 'wpmt_manual_controls_section' );
         add_settings_field( 'wpmt_manual_reset_field', 'Delete all current film and performance posts and then update', 'wpmt_manual_reset_field_callback', 'WP_Movie_Theater', 'wpmt_manual_controls_section' );
@@ -69,6 +74,9 @@ function wpmt_admin_menu_init() {
 // ==============  Section Callback functions ================= //
 function wpmt_veezi_key_section_callback() {
     echo 'Your Veezi API key can be found in your Veezi account: https://my.us.veezi.com/Api/Index';
+}
+function wpmt_veezi_custom_filters_callback() {
+    echo 'These options allow you to customize how WP Movie Theater imports film data from your ticket server';
 }
 function wpmt_manual_controls_section_callback() {
     echo "Use these settings to manually control actions of WP Movie Theater";
@@ -86,16 +94,31 @@ function wpmt_veezi_key_field_callback() {
     echo "<input type='text' size='28' name='wpmt_veezi_token' value='$setting' /> ";
     echo '<input type="submit" name="submit" id="submit" class="button button-primary" value="' . $wpmt_veezi_token_submit_button_value . '"  />';
 }
+
+function wpmt_import_format_field_callback()
+{
+    if ((esc_attr( get_option( 'wpmt_overwrite_format', 'true' ) ) == "true") || (null == esc_attr( get_option( 'wpmt_overwrite_format'))))  {
+        $overwrite_format = "checked";
+    }
+    else {
+        $overwrite_format = "";
+    }
+    echo "<input type='hidden' name='wpmt_overwrite_format' value='No' />";
+    echo "<input type='checkbox' name='wpmt_overwrite_format' value='true'" . $overwrite_format . " /> Changes made on the ticket server to the format of a film or performance  will automatically overwrite the film and performance posts on the website";
+    echo '<br /><br /><input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"  />';
+}
+
+
 function wpmt_manual_reset_field_callback() {
-    echo "<input type='submit' name='wpmt_manual_reset' id='wpmt_manual_reset' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_reset_progress"' . ", " . '"wpmt_manual_reset"' . ")' value='Reset'/> ";
+    echo "<input type='submit' name='wpmt_manual_reset' id='wpmt_manual_reset' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_reset_progress"' . ", " . '"wpmt_manual_reset"' . ")' value='Reset Movie Theater'/> ";
     echo "<span id='wpmt_manual_reset_progress'></span>";
 }
 function wpmt_manual_update_field_callback() {
-    echo "<input type='submit' name='wpmt_manual_update' id='wpmt_manual_update' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_update_progress"' . ", " . '"wpmt_manual_update"' . ")' value='Update'/> ";
+    echo "<input type='submit' name='wpmt_manual_update' id='wpmt_manual_update' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_update_progress"' . ", " . '"wpmt_manual_update"' . ")' value='Update Movie Theater'/> ";
     echo "<span id='wpmt_manual_update_progress'></span>";
 }
 function wpmt_delete_all_posts_field_callback() {
-        echo "<input type='submit' name='wpmt_manual_delete_all_posts' id='wpmt_manual_delete_all_posts' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_delete_all_posts_progress"' . ", " . '"wpmt_manual_delete_all_posts"' . ")' value='Delete Posts'/> ";
+        echo "<input type='submit' name='wpmt_manual_delete_all_posts' id='wpmt_manual_delete_all_posts' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_delete_all_posts_progress"' . ", " . '"wpmt_manual_delete_all_posts"' . ")' value='Delete All Movie Theater Posts'/> ";
         echo "<span id='wpmt_manual_delete_all_posts_progress'></span>";
 }
 
@@ -103,7 +126,7 @@ function wpmt_delete_all_posts_field_callback() {
 function wpmt_options_page() {
     ?>
     <div class="wrap">
-        <h2>WP Movie Theater Options</h2>
+        <h2>WP Movie Theater Control Panel</h2>
         <form action="options.php" method="POST">
             <?php settings_fields( 'wpmt_settings_group' ); ?>
             <?php do_settings_sections( 'WP_Movie_Theater' ); ?>

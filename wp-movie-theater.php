@@ -4,7 +4,7 @@
 Plugin Name: WP Movie Theater
 Plugin URI: https://github.com/chipete/wp-movie-theater
 Description: Custom post type “films” and “sessions” (with ticket links) which can then be displayed as a sortable list on a page, and also individually as posts.  Content can be automatically generated and updated from ticket server json feed.
-Version: 1.7.7
+Version: 1.7.8
 Author: Chris, Ryan
 Author URI: http://lightmarkcreative.com
 License: GPL2
@@ -105,9 +105,28 @@ function wpmt_update_posts( $post_data ) {
                         'meta_key'          => 'wpmt_performance_id',
                         'meta_value'        => $performance->id
                     ) )
-                ) {
-                    $post_id = wpmt_add_post( $performance->title, 'WPMT_Performance' );
-                    $performance->update_fields( $post_id );
+                    ) {
+                        $post_id = wpmt_add_post( $performance->title, 'WPMT_Performance' );
+                        $performance->update_fields( $post_id );
+                 }
+                //If option is checked to overwrite film or performance format
+                elseif (( null != get_posts( array(
+                        'posts_per_page'    => -1,
+                        'post_type'         => 'WPMT_Performance',
+                        'meta_key'          => 'wpmt_performance_id',
+                        'meta_value'        => $performance->id
+                    ) )
+                  ) && (esc_attr( get_option( 'wpmt_overwrite_format' ) ) != "No")) {
+                    $posts = get_posts( array(
+                        'posts_per_page'    => -1,
+                        'post_type'         => 'WPMT_Performance',
+                        'meta_key'          => 'wpmt_performance_id',
+                        'meta_value'        => $performance->id
+                    ));
+                    foreach ($posts as $post) {
+                        $performance->update_performance_format( $post->ID);
+                    }
+
                 }
 
             // if the format or genre is anything else, make a film
@@ -137,6 +156,24 @@ function wpmt_update_posts( $post_data ) {
                     $post_id = wpmt_add_post( $film->title, 'WPMT_Film' );
                     $film->update_fields( $post_id );
 	                $film->update_external_fields( $post_id );
+                }
+                elseif (( null != get_posts( array(
+                            'posts_per_page'    => -1,
+                            'post_type'         => 'WPMT_Film',
+                            'meta_key'          => 'wpmt_film_id',
+                            'meta_value'        => $film->id
+                        ) )
+                    ) && (esc_attr( get_option( 'wpmt_overwrite_format' ) ) != "No")) {
+                    $posts = get_posts( array(
+                        'posts_per_page'    => -1,
+                        'post_type'         => 'WPMT_Film',
+                        'meta_key'          => 'wpmt_film_id',
+                        'meta_value'        => $film->id
+                    ));
+                    foreach ($posts as $post) {
+                        $film->update_film_format( $post->ID);
+                    }
+
                 }
 
             }//end else

@@ -86,6 +86,10 @@ class WPMT_Performance {
         update_field('', $this->governmentFilmTitle, $post_id);
         */
     }
+    function update_performance_format($post_id) {
+        update_field( 'field_56afa6e9d0b73', $this->genre, $post_id );
+        update_field( 'field_56afa6ddd0b71', $this->format, $post_id );
+    }
 
     function get_veezi_people ($array, $role ) {
         //helper function getPeople ($role) that returns a comma seperated list of people of a certain role
