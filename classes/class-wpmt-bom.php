@@ -112,11 +112,11 @@
 		if( !class_exists( 'WP_Http' ) )
 			 include_once( ABSPATH . WPINC. '/class-http.php' );
 
-		$photo = new WP_Http();
+		//$photo = new WP_Http();
 		//$photo = $photo->request( 'http://example.com/photos/directory/' . $photo_name . '.jpg' );
-		$photo = $photo->request( $photo_url );
-		if( $photo['response']['code'] != 200 )
-			return false;
+		//$photo = $photo->request( $photo_url );
+		//if( $photo['response']['code'] != 200 )
+		//	return false;
 
 		$attachment = wp_upload_bits( $photo_name . '.jpg', null, $photo['body'], date("Y-m", strtotime( $photo['headers']['last-modified'] ) ) );
 		if( !empty( $attachment['error'] ) )
