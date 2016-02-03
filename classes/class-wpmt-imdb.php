@@ -3,6 +3,32 @@
 
  //echo "v10 removes - IMDb addition from IMDB -sniffed titles";
  
+
+ /*
+  * to use this class, add this to update_external_fields ()
+  *
+  * $imdb       = new WPMT_Imdb();
+  * $imdb_data  = $imdb->get_movie_info( $title );
+  *
+  *
+  *         if ( $imdb_data ) {
+
+            if ( get_field( 'wpmt_film_synopsis' ) == '' ) {
+                update_field( 'field_56a10e0618f4a', $imdb_data['plot'], $post_id ); //synopsis
+            }
+
+            if ( get_field( 'wpmt_film_genre' ) == '' ) {
+                update_field( 'field_56a10e1918f4b', $imdb_data['genres[0]'], $post_id ); //genre
+            }
+
+            if ( get_field( 'wpmt_film_directors' ) == '' ) {
+                update_field( 'field_56a1185ff6115', $imdb_data['director'], $post_id ); //director
+            }
+
+        }//end if
+  *
+  */
+
  class WPMT_Imdb {
     public $info;
 
@@ -53,7 +79,7 @@
         $arr['title'] = preg_replace('/ site:imdb.com - Google Search/', '', $arr['title']);
         $arr['title'] = trim($arr['title']);
         $arr['rating'] = $this->match('/([0-9]\.[0-9])\/10/ms', $html, 1);
-        $arr['director'] = trim(strip_tags($this->match('/Director:(.*?)Stars/ms', $html, 1)));
+        $arr['director'] = trim(strip_tags($this->match('/Director:(.*?)<\/span>/ms', $html, 1)));
         $arr['release_date'] = $this->match('/([0-9][0-9]? (January|February|March|April|May|June|July|August|September|October|November|December) (19|20)[0-9][0-9])/ms', $html, 1);
         $arr['plot'] = trim(strip_tags($this->match('/Plot:(.*?)<a/ms', $html, 1)));
         $arr['genres'] = $this->match_all('/Sections\/Genres\/(.*?)[\/">]/ms', $html, 1);
