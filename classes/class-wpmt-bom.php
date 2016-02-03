@@ -167,4 +167,42 @@ http://ia.media-imdb.com/images/M/MV5BMjQ3NTkyNjQzM15BMl5BanBnXkFtZTcwODc1NDI4Mg
 		set_post_thumbnail( $parent_post_id, $attach_id );
 	}
 
+	function _import_photo( $postid, $photo_url ) {
+		$post = get_post( $postid );
+		$photo_name = 'test';
+
+		if( empty( $post ) )
+			return false;
+
+		if( !class_exists( 'WP_Http' ) )
+			 include_once( ABSPATH . WPINC. '/class-http.php' );
+
+		$photo = new WP_Http();
+		//$photo = $photo->request( 'http://example.com/photos/directory/' . $photo_name . '.jpg' );
+		$photo = $photo->request( $photo_url );
+		if( $photo['response']['code'] != 200 )
+			return false;
+
+		$attachment = wp_upload_bits( $photo_name . '.jpg', null, $photo['body'], date("Y-m", strtotime( $photo['headers']['last-modified'] ) ) );
+		if( !empty( $attachment['error'] ) )
+			return false;
+
+		$filetype = wp_check_filetype( basename( $attachment['file'] ), null );
+
+		$postinfo = array(
+			'post_mime_type'	=> $filetype['type'],
+			'post_title'		=> $post->post_title . ' BOMojo',
+			'post_content'		=> '',
+			'post_status'		=> 'inherit',
+		);
+		$filename = $attachment['file'];
+		$attach_id = wp_insert_attachment( $postinfo, $filename, $postid );
+
+		if( !function_exists( 'wp_generate_attachment_data' ) )
+			require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+		$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+		wp_update_attachment_metadata( $attach_id,  $attach_data );
+		return $attach_id;
+	}//end function import_photos
+
  }//end class

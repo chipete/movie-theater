@@ -100,13 +100,12 @@ class WPMT_Film
         /*
         $bom        = new WPMT_Bom();
         $bom_data   = $bom->get_movie_info( $title );
-
+        */
         $imdb       = new WPMT_Imdb();
         $imdb_data  = $imdb->get_movie_info( $title );
-        */
+
         $yt         = new WPMT_Youtube();
         $yt_data    = $yt->get_youtube_url( 'WPMT_Film', $title );
-        //$yt_data    = $title;
 
 
         if ( $yt_data ) {
@@ -118,23 +117,24 @@ class WPMT_Film
             update_field( 'field_56a10c7a26578', $bom_data['poster'], $post_id );     //poster
             update_field( 'field_56a10c7a26578', $bom_data['image640'], $post_id );     //image
         }
+        */
 
         if ( $imdb_data ) {
 
             if ( get_field( 'wpmt_film_synopsis' ) == '' ) {
-                update_field( 'field_56a10c7a26578', $imdb_data['plot'], $post_id ); //synopsis
+                update_field( 'field_56a10e0618f4a', $imdb_data['plot'], $post_id ); //synopsis
             }
 
             if ( get_field( 'wpmt_film_genre' ) == '' ) {
-                update_field( 'field_56a10c7a26578', $imdb_data['genre[0]'], $post_id ); //genre
+                update_field( 'field_56a10e1918f4b', $imdb_data['genres[0]'], $post_id ); //genre
             }
 
             if ( get_field( 'wpmt_film_directors' ) == '' ) {
-                update_field( 'field_56a10c7a26578', $imdb_data['director'], $post_id ); //director
+                update_field( 'field_56a1185ff6115', $imdb_data['director'], $post_id ); //director
             }
 
         }//end if
-        */
+
 
     } //end function
     function update_film_format($post_id) {
