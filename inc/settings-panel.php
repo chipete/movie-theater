@@ -57,7 +57,7 @@ function wpmt_do_option_updates() {
             $film_and_performance_data = call_service('https://api.us.veezi.com/v1/film', $veezi_access_token);
 
 
-            $post_data_as_array = object_to_array($film_and_performance_data);
+            $post_data_as_array = wpmt_object_to_array($film_and_performance_data);
             for ($c = 0; $c < count($post_data_as_array); $c++) {
                 if ( $post_data_as_array[$c]["Genre"] != "Festival" ) {
 

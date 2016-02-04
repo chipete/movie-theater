@@ -15,6 +15,7 @@ License: GPL2
 require_once ( 'classes/class-wpmt-session.php' );
 require_once ( 'classes/class-wpmt-film.php' );
 require_once ( 'classes/class-wpmt-performance.php' );
+require_once ( 'classes/class-wpmt-tmdb.php' );
 //require_once ( 'classes/class-wpmt-bom.php' );
 //require_once ( 'classes/class-wpmt-imdb.php' );
 //require_once ( 'classes/class-wpmt-youtube.php' );
@@ -74,7 +75,7 @@ function wpmt_run() {
 
 function wpmt_update_posts( $post_data ) {
 
-    $post_data_as_array = object_to_array( $post_data );
+    $post_data_as_array = wpmt_object_to_array( $post_data );
 
     for ( $i = 0; $i < count( $post_data_as_array ); $i++ ) {
 
@@ -132,6 +133,8 @@ function wpmt_update_posts( $post_data ) {
             // if the format or genre is anything else, make a film
             } else {
                 $film = new WPMT_Film;
+	            $tmdb = new WPMT_Tmdb;
+
                 $film->assign_values( $post_data_as_array, $i );
 
                 if ( $film->status == "Inactive"  || $film->status == "Deleted" ) {
@@ -155,6 +158,7 @@ function wpmt_update_posts( $post_data ) {
                     ) ) ) {
                     $post_id = wpmt_add_post( $film->title, 'WPMT_Film' );
                     $film->update_fields( $post_id );
+	                $tmdb->update_fields( $post_id );
 	                //$film->update_external_fields( $post_id );
                 }
                 elseif (( null != get_posts( array(
@@ -198,7 +202,7 @@ function wpmt_delete_all_posts( $post_type ) {
 
 function wpmt_add_sessions( $session_data )
 {
-    $session_data_as_array = object_to_array( $session_data );
+    $session_data_as_array = wpmt_object_to_array( $session_data );
 
     for ( $i = 0; $i < count( $session_data_as_array ); $i++ ) {
 

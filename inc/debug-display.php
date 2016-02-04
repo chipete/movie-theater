@@ -10,7 +10,7 @@
 
 echo "<div id='container'>";
     echo "<div class='general_title'> All Show Times </div>";
-    $showTimeDataAsArray = object_to_array($session_data);
+    $showTimeDataAsArray = wpmt_object_to_array($session_data);
     displayAllShowTimes($showTimeDataAsArray);
 echo "</div>";
 
@@ -18,7 +18,7 @@ echo "</div>";
 echo "<div id='container'>";
     echo "<div class='general_title'> All Films </div>";
     $film = new Film;
-    $filmDataAsArray = object_to_array($film_data);
+    $filmDataAsArray = wpmt_object_to_array($film_data);
     displayAllFilms($filmDataAsArray);
 echo "</div>";
 

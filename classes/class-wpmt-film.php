@@ -91,9 +91,7 @@ class WPMT_Film
         update_field('', $this->governmentFilmTitle, $post_id);
         */
 
-        $tmdb_data = call_curl_service ( '17db82afedb26a09a8343e3c89f8c708', $this->title );
 
-         update_field( 'field_56b0a4dd84ab1', $tmdb_data->original_title, $post_id );     //rt rating
     }
 
 
