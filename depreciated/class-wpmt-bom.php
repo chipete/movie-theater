@@ -110,7 +110,7 @@
 			return false;
 
 		if( !class_exists( 'WP_Http' ) )
-			 include_once( ABSPATH . WPINC. '/class-http.php' );
+			 include_once(ABSPATH . WPINC . '/class-http.php');
 
 		//$photo = new WP_Http();
 		//$photo = $photo->request( 'http://example.com/photos/directory/' . $photo_name . '.jpg' );
@@ -139,5 +139,88 @@
 		wp_update_attachment_metadata( $attach_id,  $attach_data );
 		return $attach_id;
 	}//end function import_photos
+
+
+    function get_rotten_tomatoes( $title )
+     {
+
+         $api_key = 'mwwaecxfrzbnstpj7tya9b7k';
+         $q = urlencode('Toy Story'); // make sure to url encode an query parameters
+
+         // construct the query with our api_key and the query we want to make
+         $endpoint = 'http://api.rottentomatoes.com/api/public/v1.0/movies.json?api_key=' . $api_key . '&q=' . $q;
+
+         // setup curl to make a call to the endpoint
+         $session = curl_init($endpoint);
+
+         // indicates that we want the response back
+         curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+         // exec curl and get the data back
+         $data = curl_exec($session);
+
+         // remember to close the curl session once we are finished retrieveing the data
+         curl_close($session);
+
+         // decode the json data to make it easier to parse the php
+         $search_results = json_decode($data);
+         if ($search_results === NULL) die('Error parsing json');
+
+         // play with the data!
+         $movies = $search_results->movies;
+
+         $arr = array ();
+
+         foreach ($movies as $movie) {
+             if ($movie->title == $title) {
+                 $arr['rt_rating']    = $movie->critics_score;
+                 $arr['rt_title']     = $movie->title;
+                 $arr['rt_consensus'] = $movie->critics_consensus;
+                 $arr['rt_synopsis']  = $movie->synopsis;
+             }
+         }
+
+         return $arr;
+     }//end function get_rotten_tomatoes
+
+
+    function update_external_fields ( $post_id ) {
+
+         $title      = get_the_title( $post_id );
+
+         $bom        = new WPMT_Bom();
+         $bom_data   = $bom->get_movie_info( $title );
+
+         $yt         = new WPMT_Youtube();
+         $yt_data    = $yt->get_youtube_url( 'WPMT_Film', $title );
+
+         //$rt_data    = $this->get_rotten_tomatoes( $title );
+
+         if ( $yt_data ) {
+             update_field( 'field_56a1178eb02a7', $yt_data, $post_id );          //youtube_url
+         }
+
+         if ( $bom_data['poster'] ) {
+             $bom_poster_id = $bom->import_photo( $post_id, $bom_data['poster'] );
+             update_field( 'field_56a113b2b02a2', $bom_poster_id, $post_id );    //poster
+         }
+
+         /*
+          * This image call does not work, BOM no longer has photos. Looking into Rotten Tomatoes API (See below) or omDb api or iMdb api instead
+
+          if ( $bom_data['image640'] ) {
+             $bom_image_id   = $bom->import_photo( $post_id, $bom_data['image640'] );
+             update_field( 'field_56a1147cb02a3', $bom_image_id, $post_id );     //image
+         }
+
+         //waiting for RT API key to be approved (pending)
+
+         if ( $rt_data ) {
+             update_field( 'field_56b0a4dd84ab1', $rt_data['rt_rating'], $post_id );     //rt rating
+             update_field( 'field_56b0a4f084ab2', $rt_data['rt_consensus'], $post_id );  //rt consensus
+         }
+         */
+
+     } //end function
 
  }//end class

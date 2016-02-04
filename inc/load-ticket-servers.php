@@ -63,6 +63,40 @@ function call_service($url, $headers) {
  * requires array data
 */
 
+function call_curl_service ( $api_key, $query ) {
+
+    $query = urlencode( $query );
+    $ch = curl_init();
+    curl_setopt( $ch, CURLOPT_URL, 'http://api.themoviedb.org/3/search/movie?api_key=' . $api_key . '&query=' . $query . '&page=1' );
+    //curl_setopt( $ch, CURLOPT_URL, "http://api.themoviedb.org/3/search/movie" );
+    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
+    curl_setopt( $ch, CURLOPT_HEADER, FALSE );
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Accept: application/json"
+        //"api_key: 17db82afedb26a09a8343e3c89f8c708"
+        //"query: fight+club",
+        //"page: 1"
+    ));
+
+    $response = curl_exec( $ch );
+    curl_close( $ch );
+
+    // decode the json data to make it easier to parse the php
+    $search_results = json_decode( $response );
+    if ($search_results === NULL) die('Error parsing json');
+
+// play with the data!
+    $movies = $search_results->results;
+
+    foreach ($movies as $movie) {
+        //return the first result
+        return $movie;
+    }
+
+
+}
+
 function object_to_array($d) {
     if (is_object($d)) {
         // Gets the properties of the given object

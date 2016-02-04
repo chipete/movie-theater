@@ -15,9 +15,9 @@ License: GPL2
 require_once ( 'classes/class-wpmt-session.php' );
 require_once ( 'classes/class-wpmt-film.php' );
 require_once ( 'classes/class-wpmt-performance.php' );
-require_once ( 'classes/class-wpmt-bom.php' );
+//require_once ( 'classes/class-wpmt-bom.php' );
 //require_once ( 'classes/class-wpmt-imdb.php' );
-require_once ( 'classes/class-wpmt-youtube.php' );
+//require_once ( 'classes/class-wpmt-youtube.php' );
 
 require_once ( 'inc/custom-post-types.php' );
 require_once ( 'inc/custom-fields.php' );
@@ -155,7 +155,7 @@ function wpmt_update_posts( $post_data ) {
                     ) ) ) {
                     $post_id = wpmt_add_post( $film->title, 'WPMT_Film' );
                     $film->update_fields( $post_id );
-	                $film->update_external_fields( $post_id );
+	                //$film->update_external_fields( $post_id );
                 }
                 elseif (( null != get_posts( array(
                             'posts_per_page'    => -1,
