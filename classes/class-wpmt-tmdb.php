@@ -18,7 +18,7 @@ class WPMT_Tmdb
     //tmdb API Key
     var $api_key = '17db82afedb26a09a8343e3c89f8c708';
 
-    //associate all available TMDB fields here
+    //associate available TMDB fields to available WPMT fields
     var $associated_fields = array (
         'adult'             => '',                  //boolean       ie: false
         'backdrop_path'     => '',                  //string        ie: "/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg"
@@ -93,15 +93,27 @@ class WPMT_Tmdb
 
             foreach ( $this->associated_fields as $tmdb_field => $wpmt_field ) {
 
-                if ( empty( get_field( $wpmt_field ) ) && ! empty( $tmdb_data->{$tmdb_field} ) ) {
+                $tmdb_value = $tmdb_data->{$tmdb_field};
 
-                    update_field( $wpmt_film_fields_ref[ $wpmt_field ], $tmdb_data->{$tmdb_field}, $post_id );
+                if ( ! empty( $wpmt_field ) ) {
+                    if ( empty( get_field( $wpmt_field ) ) && ! empty( $tmdb_value ) ) {
 
-                }
-            }
-        } //end if
+                        $tmdb_value = $this->preprocess_data ( $wpmt_field, $tmdb_value );
 
+                        update_field( $wpmt_film_fields_ref[ $wpmt_field ], $tmdb_value, $post_id );
+
+                    }
+                }// end if
+            }// end foreach
+        } // end if
     }// end update_fields
 
 
+    function preprocess_data ( $wpmt_field, $tmdb_value ) {
+
+        // if $wpmt_field requires a different input than tmdb_value, then get it ready
+
+        return $tmdb_value;
+
+    }
 } // end class
