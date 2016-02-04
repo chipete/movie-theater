@@ -124,4 +124,31 @@ function wpmt_display_sessions( $film_id ) {
 	} //endif
 
 } //end function
+function wpmt_are_there_sessions( $film_id ) {
+
+	//list sessions by date
+	$args = array(
+		'post_type'         => 'WPMT_Session',
+		'meta_query'        => array(
+			array(
+				'key'           => 'wpmt_session_film_id',
+				'value'         =>  $film_id,
+				'compare'       => '=='
+			)
+		),
+		'posts_per_page'    => '-1',
+		'meta_key'          => 'wpmt_session_start',
+		'orderby'           => 'meta_value',
+		'order'             => 'ASC'
+	);
+	$my_query2 = new WP_Query( $args );
+
+	if ( $my_query2->have_posts() ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 ?>

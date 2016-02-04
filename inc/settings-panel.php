@@ -128,6 +128,8 @@ function wpmt_admin_menu_init() {
     add_settings_section( 'wpmt_veezi_custom_filters_section', 'Change and Add Filters', 'wpmt_veezi_custom_filters_callback', 'WP_Movie_Theater' );
         register_setting( 'wpmt_settings_group', 'wpmt_overwrite_format' );
         add_settings_field( 'wpmt_import_format_field', 'Overwrite format', 'wpmt_import_format_field_callback', 'WP_Movie_Theater', 'wpmt_veezi_custom_filters_section' );
+        register_setting( 'wpmt_settings_group', 'wpmt_hide_films_with_no_sessions' );
+        add_settings_field( 'wpmt_hide_films_with_no_sessions_field', 'Hide films with no show times', 'wpmt_hide_films_with_no_sessions_callback', 'WP_Movie_Theater', 'wpmt_veezi_custom_filters_section' );
 
 
     add_settings_section( 'wpmt_manual_controls_section', 'Manually Run WP Movie Theater ', 'wpmt_manual_controls_section_callback', 'WP_Movie_Theater' );
@@ -168,6 +170,17 @@ function wpmt_import_format_field_callback()
     }
     echo "<input type='hidden' name='wpmt_overwrite_format' value='No' />";
     echo "<input type='checkbox' name='wpmt_overwrite_format' value='true'" . $overwrite_format . " /> Changes made on the ticket server to the format of a film or performance  will automatically overwrite the film and performance posts on the website";
+}
+function wpmt_hide_films_with_no_sessions_callback()
+{
+    if ((esc_attr( get_option( 'wpmt_hide_films_with_no_sessions', 'Yes' ) ) == "Yes") || (null == esc_attr( get_option( 'wpmt_hide_films_with_no_sessions'))))  {
+        $hide_sessions = "checked";
+    }
+    else {
+        $hide_sessions = "";
+    }
+    echo "<input type='hidden' name='wpmt_hide_films_with_no_sessions' value='No' />";
+    echo "<input type='checkbox' name='wpmt_hide_films_with_no_sessions' value='Yes'" . $hide_sessions . " /> When checked (default), a film has to have current show times to be displayed on the website. Uncheck to display all film posts.";
     echo '<br /><br /><input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"  />';
 }
 
