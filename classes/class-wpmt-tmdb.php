@@ -22,21 +22,32 @@ class WPMT_Tmdb
 
     //associate available TMDB fields to available WPMT fields
     var $associated_fields = array (
-        'adult'             => '',                          //boolean       ie: false
-        'backdrop_path'     => 'wpmt_film_image',           //string        ie: "/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg"
-        'genre_ids'         => '',                          //array         ie: [ 18 ]
-        'id'                => '',                          //tmdb id       ie: 550
-        'original_language' => 'wpmt_film_audio_language',  //              ie: "en"
-        'original_title'    => '',                          //              ie: "Fight Club"
-        'overview'          => 'wpmt_film_synopsis',        //              ie: "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."
-        'release_date'      => '',                          //              ie: "1999-10-14"
-        'poster_path'       => 'wpmt_film_poster',          //              ie: "/811DjJTon9gD6hZ8nCjSitaIXFQ.jpg"
-        'popularity'        => '',                          //num           ie: 4.39844
-        'title'             => 'wpmt_film_title',           //              ie: "Fight Club",
-        'video'             => 'wpmt_film_youtube_url',     //??            ie: false
-        'vote_average'      => '',                          //num           ie: 7.8
-        'vote_count'        => '',                          //int           ie: 3527
-        'trailer_id'        => 'wpmt_film_youtube_url',     //we make this one from &append_to_response=trailers in get_tmdb_data
+        'adult'                 => '',                          //boolean       ie: false
+        'backdrop_path'         => 'wpmt_film_image',           //string        ie: "/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg"
+        'belongs_to_collection' => '',                          //              ie: null
+        'budget'                => '',                          //int           ie: 63000000
+        'genres'                => '',                          //array         ie: [ { "id": 18, "name": "Drama" } ]
+        'homepage'              => '',                          //string        ie: ""
+        'id'                    => '',                          //tmdb id       ie: 550
+        'imdb_id'               => '',                          //imdb id       ie: tt0137523
+        'original_language'     => 'wpmt_film_audio_language',  //              ie: "en"
+        'original_title'        => '',                          //              ie: "Fight Club"
+        'overview'              => 'wpmt_film_synopsis',        //              ie: "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."
+        'popularity'            => '',                          //num           ie: 4.39844
+        'poster_path'           => 'wpmt_film_poster',          //              ie: "/811DjJTon9gD6hZ8nCjSitaIXFQ.jpg"
+        'production_companies'  => '',                          //array         ie: [ { "name": "20th Century Fox", "id": 25 }, { "name": "Fox 2000 Pictures", "id": 711 } ]
+        'production_countries'  => '',                          //array         ie: [ { "iso_3166_1": "DE", "name": "Germany" }, { "iso_3166_1": "US", "name": "United States of America" } ]
+        'release_date'          => '',                          //              ie: "1999-10-14"
+        'revenue'               => '',                          //int           ie: 100853753
+        'runtime'               => 'wpmt_film_duration',        //int           ie: 139
+        'spoken_languages'      => '',                          //array         ie: [ { "iso_639_1": "en", "name": "English" } ]
+        'status'                => '',                          //              ie: "Released"
+        'tagline'               => '',                          //              ie: "How much can you know about yourself if you've never been in a fight?"
+        'title'                 => 'wpmt_film_title',           //              ie: "Fight Club",
+        'video'                 => '',                          //bool          ie: false  (is this a video or a theatrical film/movie?)
+        'vote_average'          => '',                          //num           ie: 7.8
+        'vote_count'            => '',                          //int           ie: 3527
+        'trailer_id'            => 'wpmt_film_youtube_url',     //we make this one from &append_to_response=trailers in get_tmdb_data
         );
 
 
@@ -88,10 +99,19 @@ class WPMT_Tmdb
 
     function pre_process_data ( $wpmt_field, $tmdb_value, $post_id ) {
 
-        if ($wpmt_field == 'wpmt_film_image' || $wpmt_field == 'wpmt_film_poster' ) {
+        if ( $wpmt_field == 'wpmt_film_image' ) {
 
             // add base_url
-            $photo_url = 'https://image.tmdb.org/t/p/w500' . $tmdb_value;
+            $photo_url = 'https://image.tmdb.org/t/p/w780' . $tmdb_value;
+
+            // import the photo and return the attachment_id
+            return $this->import_photo( $photo_url, $post_id );
+        }
+
+        elseif ( $wpmt_field == 'wpmt_film_poster' ) {
+
+            // add base_url
+            $photo_url = 'https://image.tmdb.org/t/p/w342' . $tmdb_value;
 
             // import the photo and return the attachment_id
             return $this->import_photo( $photo_url, $post_id );
@@ -99,7 +119,7 @@ class WPMT_Tmdb
 
         elseif ( $wpmt_field == 'wpmt_film_youtube_url' ) {
             //add base_url
-            return 'http://www.youtube.com/v/' . $tmdb_value;
+            return 'https://www.youtube.com/embed/' . $tmdb_value;
         }
 
         else {

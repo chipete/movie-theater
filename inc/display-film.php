@@ -23,11 +23,28 @@
 		<!-- Film Body -->
 		<hr /><br />
 		<div class="row">
-
-			<!-- comment out image for now
 			<div class="col-md-4">
-				<img src="http://placehold.it/250x366" alt="<?php// get_field('wpmt_film_short_name'); ?>" title="<?php// get_field('wpmt_film_short_name'); ?>" />
-			</div>-->
+				<?php if ( ! empty( get_field( 'wpmt_film_youtube_url' ) ) ) : ?>
+					<iframe width="640" height="360" src="<?php echo get_field( 'wpmt_film_youtube_url' ) . '?rel=0&amp;showinfo=0'; ?>" frameborder="0" allowfullscreen></iframe>
+				<?php endif ?>
+			</div>
+
+			<div class="col-md-4">
+				<?php echo wp_get_attachment_image( get_field('wpmt_film_poster'),
+					$size = 'wpmt_poster',
+					$icon = false,
+					$attr = array ( 'alt' => get_the_title( $post ), 'title' => get_the_title( $post ) )
+				); ?>
+			</div>
+
+			<div class="col-md-4">
+				<?php echo wp_get_attachment_image( get_field('wpmt_film_image'),
+													$size = 'wpmt_image',
+													$icon = false,
+													$attr = array ( 'alt' => get_the_title( $post ), 'title' => get_the_title( $post ) )
+				); ?>
+			</div>
+
 
 			<div class="col-md-8">
 				<p class="lead"><?php the_field('wpmt_film_synopsis'); ?></p>

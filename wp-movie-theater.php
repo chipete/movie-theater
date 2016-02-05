@@ -38,14 +38,25 @@ function wpmt_activation() {
 
 add_action( 'wpmt_update_posts', 'wpmt_run' );
 
-//clean the scheduler on deactivation:
+// clean the scheduler on deactivation:
 register_deactivation_hook( __FILE__, 'wpmt_deactivation' );
 
 function wpmt_deactivation() {
 	wp_clear_scheduled_hook( 'wpmt_update_posts' );
 }
 
+// add the image crop sizes to WP
+add_image_size( 'wpmt_poster', 250, 366 );
+add_image_size( 'wpmt_image', 480, 290 );
 
+add_filter( 'image_size_names_choose', 'wpmt_custom_image_sizes');
+
+function wpmt_custom_image_sizes( $sizes ) {
+    return array_merge( $sizes, array(
+        'wpmt_poster'   => __( 'WPMT Poster (250x366)' ),
+        'wpmt_image'    => __( 'WPMT Image (480x290)' ),
+    ) );
+}
 //=========================== Functions ======================//
 
 //main function that runs everything

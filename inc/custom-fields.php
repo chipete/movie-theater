@@ -305,8 +305,8 @@ $wpmt_film_fields = array (
         'name' => 'wpmt_film_poster',
         'type' => 'image',
         'instructions' => 'vertical poster approx. 250x366',
-        'save_format' => 'url',
-        'preview_size' => 'thumbnail',
+        'save_format' => 'id',
+        'preview_size' => 'wpmt_poster',
         'library' => 'all',
     ),
     array (
@@ -315,8 +315,8 @@ $wpmt_film_fields = array (
         'name' => 'wpmt_film_image',
         'type' => 'image',
         'instructions' => 'film featured image. Approx. 480x290',
-        'save_format' => 'url',
-        'preview_size' => 'thumbnail',
+        'save_format' => 'id',
+        'preview_size' => 'wpmt_image',
         'library' => 'all',
     ),
     array (
