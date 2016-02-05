@@ -142,7 +142,7 @@
 		$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
 		wp_update_attachment_metadata( $attach_id,  $attach_data );
 		return $attach_id;
-	}//end function import_photos
+	}//end function import_photo
 
 
     function get_rotten_tomatoes( $title )
@@ -226,5 +226,57 @@
          */
 
      } //end function
+
+
+
+	 function call_curl_service2 ( $query ) {
+
+		 $query = urlencode( $query );
+		 $ch = curl_init();
+		 curl_setopt( $ch, CURLOPT_URL, 'http://api.themoviedb.org/3/search/movie?api_key=' . $this->api_key . '&query=' . $query . '&page=1&append_to_response=trailers' );
+		 curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
+		 curl_setopt( $ch, CURLOPT_HEADER, FALSE );
+
+		 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			 "Accept: application/json"
+		 ));
+
+		 $response = curl_exec( $ch );
+		 curl_close( $ch );
+
+		 // decode the json data to make it easier to parse the php
+		 $search_results = json_decode( $response );
+		 if ($search_results === NULL) die('Error parsing json');
+
+		 // play with the data!
+		 $movies = $search_results->results;
+
+		 foreach ($movies as $movie) {
+			 // return the first result
+			 return $movie;
+		 }
+
+	 } // end call_curl_service
+
+
+	 /*
+	  * trailer result
+	  * {
+   "id": 550,
+   "results": [
+	 {
+	   "id": "533ec654c3a36854480003eb",
+	   "iso_639_1": "en",
+	   "key": "SUXWAEX2jlg",
+	   "name": "Trailer 1",
+	   "site": "YouTube",
+	   "size": 720,
+	   "type": "Trailer"
+	 }
+   ]
+ }
+	  */
+
+
 
  }//end class
