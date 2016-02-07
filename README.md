@@ -2,7 +2,7 @@
 
 This plugin is in ALPHA development. Not fully functional. Please do not download or install, especially on a live site. may break your WP install.
 
-** requires "Advanced Custom Fields" plugin **
+*** requires "Advanced Custom Fields" plugin ***
 
 
 =============== Available Fields ==================
