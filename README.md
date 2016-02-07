@@ -69,4 +69,4 @@ wpmt_performance_image                 performance featured image. Approx. 480x2
 wpmt_performance_hide                  boolean
 wpmt_performance_free                  boolean
 wpmt_performance_youtube_url           ie: https://www.youtube.com/embed/CTavNwUgapo
-wpmt_performance_reviews
+wpmt_performance_reviews 
