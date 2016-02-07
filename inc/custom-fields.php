@@ -163,6 +163,20 @@ $wpmt_film_fields = array (
         'maxlength' => '',
     ),
     array (
+        'key' => 'field_56b571dec2eaf',
+        'label' => 'Next Session',
+        'name' => 'wpmt_film_next_session',
+        'type' => 'post_object',
+        'post_type' => array (
+            0 => 'wpmt_session',
+        ),
+        'taxonomy' => array (
+            0 => 'all',
+        ),
+        'allow_null' => 1,
+        'multiple' => 0,
+    ),
+    array (
         'key' => 'field_56a118f80afd1',
         'label' => 'Ticket Server opening date',
         'name' => 'wpmt_film_opening_date',

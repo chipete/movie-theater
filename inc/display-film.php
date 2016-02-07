@@ -38,27 +38,36 @@
 			</div>
 
 			<div class="col-md-4">
-				<?php echo wp_get_attachment_image( get_field('wpmt_film_image'),
+				<?php echo wp_get_attachment_image( get_field( 'wpmt_film_image' ),
 													$size = 'wpmt_image',
 													$icon = false,
 													$attr = array ( 'alt' => get_the_title( $post ), 'title' => get_the_title( $post ) )
-				); ?>
+													);
+				?>
 			</div>
 
 
 			<div class="col-md-8">
-				<p class="lead"><?php the_field('wpmt_film_synopsis'); ?></p>
+				<p class="lead"><?php the_field( 'wpmt_film_synopsis' ); ?></p>
 
 				<br />
 				<?php //save the post
 				global $post;
-				$backup = $post;
+				$backup = clone $post;
 				?>
 				<!-- list the date and times -->
-				<?php wpmt_display_sessions( get_field( 'wpmt_film_id' ) ); ?>
+				<?php
+				if ( wpmt_sessions_exist ( get_field( 'wpmt_film_id' ) ) ) {
+					wpmt_display_sessions ( get_field( 'wpmt_film_id' ) );
+				}
+
+				else {
+					echo "No tickets available at this time";
+				}
+				?>
 
 				<?php //restore the post
-				$post = $backup;
+				$post = clone $backup;
 				?>
 			</div>
 
@@ -94,7 +103,8 @@
 
 
 <?php
-function wpmt_display_sessions( $film_id ) {
+
+function wpmt_display_sessions( $film_id, $days=null ) {
 
 	//list sessions by date
 	$args = array(
@@ -111,12 +121,11 @@ function wpmt_display_sessions( $film_id ) {
 		'orderby'           => 'meta_value',
 		'order'             => 'ASC'
 	);
-	$my_query2 = new WP_Query( $args );
+
+	$my_query2 	= new WP_Query( $args );
+	$i			= 0;
 
 	if ( $my_query2->have_posts() ) {
-
-		echo '<h4>Book Tickets</h4><hr />';
-
 
 		while ( $my_query2->have_posts() ) {
 
@@ -124,23 +133,27 @@ function wpmt_display_sessions( $film_id ) {
 			$timestamp = strtotime( get_field( 'wpmt_session_start' ) );
 			$this_date = date( 'l, M j', $timestamp );
 
-			if ( $this_date != $prev_date ) {
-				echo '<h5>' . date( 'l, M j', $timestamp ) . '</h5>';
+			if ( $i === $days ) {
+				return false;
 			}
 
-			echo '<div class="btn-group" role="group" aria-label="">';
-			echo '<a class="btn btn-info"
-                     href="' . get_field( 'wpmt_session_ticket_url' ) . '"
-                     target="_blank">' . date( 'g:ia', $timestamp ) . '</a>';
-
 			if ( $this_date != $prev_date ) {
-				echo '</div>';
+				echo '<br /><strong>' . date( 'l, M j', $timestamp ) . '</strong><br />';
 				$prev_date = $this_date;
+				$i++;
 			}
+
+			echo ' <a class="btn btn-info"
+                     href="' . get_field( 'wpmt_session_ticket_url' ) . '"
+                     target="_blank">' . date( 'g:ia', $timestamp ) . '</a> ';
+
 		} //end while
+
 	} //endif
 
 } //end function
+
+
 function wpmt_are_there_sessions( $film_id ) {
 
 	//list sessions by date

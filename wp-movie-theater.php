@@ -46,7 +46,7 @@ function wpmt_deactivation() {
 }
 
 // add the image crop sizes to WP
-add_image_size( 'wpmt_poster', 250, 366 );
+add_image_size( 'wpmt_poster', 134, 193 );
 add_image_size( 'wpmt_image', 480, 290 );
 
 add_filter( 'image_size_names_choose', 'wpmt_custom_image_sizes');
@@ -57,6 +57,8 @@ function wpmt_custom_image_sizes( $sizes ) {
         'wpmt_image'    => __( 'WPMT Image (480x290)' ),
     ) );
 }
+
+
 //=========================== Functions ======================//
 
 //main function that runs everything
@@ -257,7 +259,7 @@ function wpmt_display_film_shortcode( $content ) {
 
 }
 
-add_filter( 'the_content', 'wpmt_display_film_shortcode' );
+// add_filter( 'the_content', 'wpmt_display_film_shortcode' );
 
 
 function wpmt_display_films_shortcode( $atts, $content = null ) {
@@ -276,7 +278,7 @@ function wpmt_display_films_shortcode( $atts, $content = null ) {
 
         while ( $my_query->have_posts() ) {
             $my_query->the_post();
-            if ((wpmt_are_there_sessions( get_field( 'wpmt_film_id' )) == true) || (esc_attr( get_option( 'wpmt_hide_films_with_no_sessions') ) == "No")) {
+            if ( wpmt_sessions_exist( get_field( 'wpmt_film_id' ) ) || esc_attr( get_option( 'wpmt_hide_films_with_no_sessions') ) == "No" ) {
                 //first checks to make sure there are sessions before displaying the film or ignores if the option to allow all films is selected
                 //the displays the film
                 wpmt_display_film();
@@ -291,5 +293,20 @@ function wpmt_display_films_shortcode( $atts, $content = null ) {
 add_shortcode( 'wpmt_films', 'wpmt_display_films_shortcode' );
 
 
+function wpmt_sessions_exist ( $wpmt_film_id ) {
+
+    $args = array(
+        'post_type'         => 'WPMT_Session',
+        'meta_key'          => 'wpmt_session_film_id',
+        'meta_value'        => $wpmt_film_id
+    );
+
+    $my_query2 = new WP_Query( $args );
+
+    return $my_query2->have_posts();
+}
 
 
+function wpmt_get_ticket_server_url () {
+    return 'http://ticketing.us.veezi.com/sessions/?siteToken=TxTIIqmyZE6D2x7lOm%2fRiQ%3d%3d';
+}
