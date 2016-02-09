@@ -48,13 +48,15 @@ function wpmt_deactivation() {
 // add the image crop sizes to WP
 add_image_size( 'wpmt_poster', 134, 193 );
 add_image_size( 'wpmt_image', 480, 290 );
+add_image_size( 'wpmt_slider_thumb', 170, 112, true );
 
 add_filter( 'image_size_names_choose', 'wpmt_custom_image_sizes');
 
 function wpmt_custom_image_sizes( $sizes ) {
     return array_merge( $sizes, array(
-        'wpmt_poster'   => __( 'WPMT Poster (250x366)' ),
-        'wpmt_image'    => __( 'WPMT Image (480x290)' ),
+        'wpmt_poster'          => __( 'WPMT Poster (250x366)' ),
+        'wpmt_image'           => __( 'WPMT Image (480x290)' ),
+        'wpmt_slider_thumb'    => __( 'WPMT Slider Thumb (170x112)' ),
     ) );
 }
 
