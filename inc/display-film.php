@@ -104,7 +104,7 @@
 
 <?php
 
-function wpmt_display_sessions( $film_id, $days=null ) {
+function wpmt_display_sessions( $film_id=null, $days=null ) {
 
 	//list sessions by date
 	$args = array(

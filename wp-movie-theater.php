@@ -305,7 +305,12 @@ function wpmt_sessions_exist ( $wpmt_film_id ) {
 
     $my_query2 = new WP_Query( $args );
 
-    return $my_query2->have_posts();
+    if ( $my_query2->have_posts() ) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 
