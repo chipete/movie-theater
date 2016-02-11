@@ -49,6 +49,7 @@ function wpmt_deactivation() {
 add_image_size( 'wpmt_poster', 134, 193 );
 add_image_size( 'wpmt_image', 480, 290 );
 add_image_size( 'wpmt_slider_thumb', 170, 112, true );
+add_image_size( 'wpmt_performance_thumb', 134, 193 );
 
 add_filter( 'image_size_names_choose', 'wpmt_custom_image_sizes');
 
