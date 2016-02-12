@@ -590,8 +590,8 @@ $wpmt_performance_fields = array (
         'name' => 'wpmt_performance_poster',
         'type' => 'image',
         'instructions' => 'vertical poster approx. 250x366',
-        'save_format' => 'url',
-        'preview_size' => 'thumbnail',
+        'save_format' => 'id',
+        'preview_size' => 'wpmt_poster',
         'library' => 'all',
     ),
     array (
@@ -600,8 +600,8 @@ $wpmt_performance_fields = array (
         'name' => 'wpmt_performance_image',
         'type' => 'image',
         'instructions' => 'Performance featured image. Approx. 480x290',
-        'save_format' => 'url',
-        'preview_size' => 'thumbnail',
+        'save_format' => 'id',
+        'preview_size' => 'wpmt_poster',
         'library' => 'all',
     ),
     array (
