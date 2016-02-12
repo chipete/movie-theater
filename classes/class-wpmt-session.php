@@ -1,4 +1,3 @@
-<!--<link href="css/films.css" type="text/css" rel="stylesheet" /> --> <!-- Used mostly for testing purposes at the moment // -->
 <?php
 
 /**
@@ -39,6 +38,7 @@ class WPMT_Session
     var $audio_language;                //The audio language assigned to this session. This may differ from the original language of the film. This is not able to be set
     var $ticket_url;                    //extra property URL which contains the URL that can be used to purchase tickets to that session if Veezi Web Ticketing is enabled
 
+
     function assign_values( $VeeziAPIData, $key )
     {
         //assignValues is designed to streamline the move from
@@ -69,9 +69,10 @@ class WPMT_Session
         $this->ticket_url                   = $VeeziAPIData[$key]['Url'];
     }
 
+
     function update_fields ( $post_id ) {
 
-        update_field( 'field_56a12595938bf', $this->feature_start_time, $post_id );
+        update_field( 'field_56a12595938bf', $this->pre_show_start_time, $post_id );
         update_field( 'field_56a1261d938c0', $this->feature_end_time, $post_id );
         update_field( 'field_56a12574938be', $this->film_id, $post_id );
         update_field( 'field_56a12677938c1', $this->title, $post_id );

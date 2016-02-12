@@ -1,11 +1,3 @@
-<head>
-    <script>
-        wpmt_option_action_in_progress = function(wpmt_progress_id, button_id) {
-            document.getElementById(wpmt_progress_id).innerHTML = '<img src="<?php echo plugins_url('../images/wpmt_indicator.gif', __FILE__); ?>" style=' + "'width: 15px; height: 15px;'" + '" /> In Progress... (this may take a few minutes)';
-            document.getElementById(button_id).style.display = 'none';
-        }
-    </script>
-</head>
 <?php
 /**
  * Created by PhpStorm.
@@ -13,6 +5,10 @@
  * Date: 1/29/16
  * Time: 8:43 AM
  */
+?>
+
+<?php
+
 add_action( 'admin_init', 'wpmt_do_option_updates' );
 add_action( 'admin_init', 'wpmt_admin_menu_init' );
 add_action( 'admin_menu', 'wpmt_admin_menu' );
@@ -212,3 +208,5 @@ function wpmt_options_page() {
     <?php
 }
 ?>
+
+

@@ -138,7 +138,7 @@ function wpmt_display_sessions( $film_id=null, $days=null ) {
 			}
 
 			if ( $this_date != $prev_date ) {
-				echo '<br /><strong>' . date( 'l, M j', $timestamp ) . '</strong><br />';
+				echo '<h6>' . date( 'l, M j', $timestamp ) . '</h6>';
 				$prev_date = $this_date;
 				$i++;
 			}

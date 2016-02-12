@@ -16,9 +16,6 @@ require_once ( 'classes/class-wpmt-session.php' );
 require_once ( 'classes/class-wpmt-film.php' );
 require_once ( 'classes/class-wpmt-performance.php' );
 require_once ( 'classes/class-wpmt-tmdb.php' );
-//require_once ( 'classes/class-wpmt-bom.php' );
-//require_once ( 'classes/class-wpmt-imdb.php' );
-//require_once ( 'classes/class-wpmt-youtube.php' );
 
 require_once ( 'inc/custom-post-types.php' );
 require_once ( 'inc/custom-fields.php' );
@@ -73,13 +70,13 @@ function wpmt_run() {
     $film_and_performance_data    = call_service( 'https://api.us.veezi.com/v1/film', $veezi_access_token );
 
     //1. delete all sessions
-    wpmt_delete_all_posts( 'WPMT_Session' );
+    wpmt_delete_all_posts( 'wpmt_session' );
 
     //1-B. for testing, delete all films. This should be commented-out
-    //wpmt_delete_all_posts( 'WPMT_Film' );
+    //wpmt_delete_all_posts( 'wpmt_film' );
 
     //2. if all sessions have been deleted, add the new ones
-    if ( NULL == get_posts( array( 'post_type'=> 'WPMT_Session' ) ) ) {
+    if ( NULL == get_posts( array( 'post_type'=> 'wpmt_session' ) ) ) {
         wpmt_add_sessions( $session_data );
     }
 
@@ -106,7 +103,7 @@ function wpmt_update_posts( $post_data ) {
 
                     $inactive_performances = get_posts( array(
                         'posts_per_page'    => -1,
-                        'post_type'         => 'WPMT_Performance',
+                        'post_type'         => 'wpmt_performance',
                         'meta_key'          => 'wpmt_performance_id',
                         'meta_value'        => $performance->id
                     ) );
@@ -117,25 +114,25 @@ function wpmt_update_posts( $post_data ) {
 
                 } elseif ( null == get_posts( array(
                         'posts_per_page'    => -1,
-                        'post_type'         => 'WPMT_Performance',
+                        'post_type'         => 'wpmt_performance',
                         'meta_key'          => 'wpmt_performance_id',
                         'meta_value'        => $performance->id
                     ) )
                     ) {
-                        $post_id = wpmt_add_post( $performance->title, 'WPMT_Performance' );
+                        $post_id = wpmt_add_post( $performance->title, 'wpmt_performance' );
                         $performance->update_fields( $post_id );
                  }
                 //If option is checked to overwrite film or performance format
                 elseif (( null != get_posts( array(
                         'posts_per_page'    => -1,
-                        'post_type'         => 'WPMT_Performance',
+                        'post_type'         => 'wpmt_performance',
                         'meta_key'          => 'wpmt_performance_id',
                         'meta_value'        => $performance->id
                     ) )
                   ) && (esc_attr( get_option( 'wpmt_overwrite_format' ) ) != "No")) {
                     $posts = get_posts( array(
                         'posts_per_page'    => -1,
-                        'post_type'         => 'WPMT_Performance',
+                        'post_type'         => 'wpmt_performance',
                         'meta_key'          => 'wpmt_performance_id',
                         'meta_value'        => $performance->id
                     ));
@@ -156,7 +153,7 @@ function wpmt_update_posts( $post_data ) {
 
                     $inactive_films = get_posts( array(
                         'posts_per_page'    => -1,
-                        'post_type'         => 'WPMT_Film',
+                        'post_type'         => 'wpmt_film',
                         'meta_key'          => 'wpmt_film_id',
                         'meta_value'        => $film->id
                     ) );
@@ -167,24 +164,24 @@ function wpmt_update_posts( $post_data ) {
 
                 } elseif ( null == get_posts( array(
                         'posts_per_page'    => -1,
-                        'post_type'         => 'WPMT_Film',
+                        'post_type'         => 'wpmt_film',
                         'meta_key'          => 'wpmt_film_id',
                         'meta_value'        => $film->id
                     ) ) ) {
-                    $post_id = wpmt_add_post( $film->title, 'WPMT_Film' );
+                    $post_id = wpmt_add_post( $film->title, 'wpmt_film' );
                     $film->update_fields( $post_id );
 	                $tmdb->update_fields( $post_id );
                 }
                 elseif (( null != get_posts( array(
                             'posts_per_page'    => -1,
-                            'post_type'         => 'WPMT_Film',
+                            'post_type'         => 'wpmt_film',
                             'meta_key'          => 'wpmt_film_id',
                             'meta_value'        => $film->id
                         ) )
                     ) && (esc_attr( get_option( 'wpmt_overwrite_format' ) ) != "No")) {
                     $posts = get_posts( array(
                         'posts_per_page'    => -1,
-                        'post_type'         => 'WPMT_Film',
+                        'post_type'         => 'wpmt_film',
                         'meta_key'          => 'wpmt_film_id',
                         'meta_value'        => $film->id
                     ));
@@ -214,19 +211,20 @@ function wpmt_delete_all_posts( $post_type ) {
 }
 
 
-function wpmt_add_sessions( $session_data )
+/*function wpmt_add_sessions( $session_data )
 {
     $session_data_as_array = wpmt_object_to_array( $session_data );
 
+    $session = new WPMT_Session;
+
     for ( $i = 0; $i < count( $session_data_as_array ); $i++ ) {
 
-        $session = new WPMT_Session;
         $session->assign_values( $session_data_as_array, $i );
 
-        $post_id = wpmt_add_post( $session->title, 'WPMT_Session' );
+        $post_id = wpmt_add_post( $session->title, 'wpmt_session' );
         $session->update_fields( $post_id );
     }
-}
+}*/
 
 
 function wpmt_add_post( $title, $post_type ) {
@@ -267,7 +265,7 @@ function wpmt_display_film_shortcode( $content ) {
 function wpmt_display_films_shortcode( $atts, $content = null ) {
 
     $args = array(
-        'post_type'         => 'WPMT_Film',
+        'post_type'         => 'wpmt_film',
         'posts_per_page'    => '-1',
         'meta_key'          => 'wpmt_film_opening_date',
         'orderby'           => 'meta_value',
@@ -298,7 +296,7 @@ add_shortcode( 'wpmt_films', 'wpmt_display_films_shortcode' );
 function wpmt_sessions_exist ( $wpmt_film_id ) {
 
     $args = array(
-        'post_type'         => 'WPMT_Session',
+        'post_type'         => 'wpmt_session',
         'meta_key'          => 'wpmt_session_film_id',
         'meta_value'        => $wpmt_film_id
     );
