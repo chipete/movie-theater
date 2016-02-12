@@ -12,6 +12,11 @@
 add_action( 'admin_init', 'wpmt_do_option_updates' );
 add_action( 'admin_init', 'wpmt_admin_menu_init' );
 add_action( 'admin_menu', 'wpmt_admin_menu' );
+function wpmt_load_setting_headers() {
+    wp_enqueue_script( 'wpmt-settings-panel-js', plugins_url( '/scripts/wpmt-settings-panel-js.js' , dirname(__FILE__) ) );
+}
+add_action('admin_enqueue_scripts', 'wpmt_load_setting_headers');
+
 
 function wpmt_do_option_updates() {
     //need to add a verification of user priviledges in here
@@ -192,7 +197,7 @@ function wpmt_manual_update_field_callback() {
     echo "<input type='checkbox' name='wpmt_manual_updates_checkbox[]' value='update film formats' /> Overwrite Film formats and genres <br />";
     echo "<input type='checkbox' name='wpmt_manual_updates_checkbox[]' value='update performance formats' /> Overwrite Performance formats and genres <br/> <br />";
 
-    echo "<input type='submit' name='wpmt_manual_update' class='button button-primary' id='wpmt_manual_update' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_update_progress"' . ", " . '"wpmt_manual_update"' . ")' value='Run Manual Updates'/> ";
+    echo "<input type='submit' name='wpmt_manual_update' class='button button-primary' id='wpmt_manual_update' Onclick='wpmt_option_action_in_progress(" . '"wpmt_manual_update_progress"' . ", " . '"wpmt_manual_update", "' . plugins_url('../images/wpmt_indicator.gif', __FILE__) . '"' . ")' value='Run Manual Updates'/> ";
     echo "<span id='wpmt_manual_update_progress'></span>";
 }
 
