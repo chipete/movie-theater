@@ -212,7 +212,7 @@ function wpmt_delete_all_posts( $post_type ) {
 }
 
 
-/*function wpmt_add_sessions( $session_data )
+function wpmt_add_sessions( $session_data )
 {
     $session_data_as_array = wpmt_object_to_array( $session_data );
 
@@ -225,7 +225,7 @@ function wpmt_delete_all_posts( $post_type ) {
         $post_id = wpmt_add_post( $session->title, 'wpmt_session' );
         $session->update_fields( $post_id );
     }
-}*/
+}
 
 
 function wpmt_add_post( $title, $post_type ) {
