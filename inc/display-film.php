@@ -24,7 +24,7 @@
 		<hr /><br />
 		<div class="row">
 			<div class="col-md-4">
-				<?php if ( ! empty( get_field( 'wpmt_film_youtube_url' ) ) ) : ?>
+				<?php if ( ! get_field( 'wpmt_film_youtube_url' ) )  : ?>
 					<iframe width="640" height="360" src="<?php echo get_field( 'wpmt_film_youtube_url' ) . '?rel=0&amp;showinfo=0'; ?>" frameborder="0" allowfullscreen></iframe>
 				<?php endif ?>
 			</div>

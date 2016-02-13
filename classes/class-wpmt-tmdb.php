@@ -84,8 +84,7 @@ class WPMT_Tmdb
                 $tmdb_value = $tmdb_data[$tmdb_field];
 
                 if ( ! empty( $wpmt_field ) &&
-                     //! empty( $tmdb_value ) &&
-                     empty( get_field( $wpmt_field ) ) ) {
+                     ! get_field( $wpmt_field ) )  {
 
                     $tmdb_value = $this->pre_process_data ( $wpmt_field, $tmdb_value, $post_id );
 
