@@ -46,7 +46,8 @@ function wpmt_deactivation() {
 add_image_size( 'wpmt_poster', 134, 193 );
 add_image_size( 'wpmt_image', 480, 290 );
 add_image_size( 'wpmt_slider_thumb', 170, 112, true );
-add_image_size( 'wpmt_performance_thumb', 134, 193 );
+add_image_size( 'wpmt_thumb_280x112', 280, 112, true );
+add_image_size( 'wpmt_thumb_280x158', 280, 158, true );
 
 add_filter( 'image_size_names_choose', 'wpmt_custom_image_sizes');
 
@@ -55,6 +56,9 @@ function wpmt_custom_image_sizes( $sizes ) {
         'wpmt_poster'          => __( 'WPMT Poster (250x366)' ),
         'wpmt_image'           => __( 'WPMT Image (480x290)' ),
         'wpmt_slider_thumb'    => __( 'WPMT Slider Thumb (170x112)' ),
+        'wpmt_thumb_280x112'   => __( 'WPMT Slider Thumb (280x112)' ),
+        'wpmt_thumb_280x158'   => __( 'WPMT Slider Thumb (280x158)' ),
+
     ) );
 }
 
@@ -88,6 +92,17 @@ function wpmt_run() {
 
 function wpmt_update_posts( $post_data ) {
 
+    $performance_genres = array (
+        'Alternative Content',
+        'Comedy',
+        'Concert',
+        'Dance',
+        'Family',
+        'Live Show',
+        'Live Sports Broadcast',
+        'Musical'
+    );
+
     $post_data_as_array = wpmt_object_to_array( $post_data );
 
     for ( $i = 0; $i < count( $post_data_as_array ); $i++ ) {
@@ -95,8 +110,8 @@ function wpmt_update_posts( $post_data ) {
         // do not import festival films
         if ( $post_data_as_array[$i]["Genre"] != "Festival" ) {
 
-            // if the format is 'not a film' and it's not a documentary, then make a performance
-            if ( $post_data_as_array[$i]["Format"] == "Not a Film" && $post_data_as_array[$i]["Genre"] != "Documentary" ) {
+            // if the format is 'not a film' and is a performance genre, then make it a performance
+            if ( $post_data_as_array[$i]["Format"] == "Not a Film" && in_array( $post_data_as_array[$i]["Genre"], $performance_genres ) ) {
                 $performance = new WPMT_Performance;
                 $performance->assign_values( $post_data_as_array, $i );
 

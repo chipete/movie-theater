@@ -165,7 +165,7 @@ $wpmt_film_fields = array (
     array (
         'key' => 'field_56b571dec2eaf',
         'label' => 'Next Session Start time',
-        'name' => 'wpmt_film_next_session_start',
+        'name' => 'wpmt_film_start',
         'type' => 'text',
         'instructions' => 'sample: 2014-08-15T00:00:00',
         'default_value' => '',
@@ -439,6 +439,19 @@ $wpmt_performance_fields = array (
 	Active
 	Inactive
 	Deleted',
+        'default_value' => '',
+        'placeholder' => '',
+        'prepend' => '',
+        'append' => '',
+        'formatting' => 'html',
+        'maxlength' => '',
+    ),
+    array (
+        'key' => 'field_56bebae941137',
+        'label' => 'Next Session Start time',
+        'name' => 'wpmt_performance_start',
+        'type' => 'text',
+        'instructions' => 'sample: 2014-08-15T00:00:00',
         'default_value' => '',
         'placeholder' => '',
         'prepend' => '',

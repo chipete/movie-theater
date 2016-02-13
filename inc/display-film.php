@@ -181,4 +181,14 @@ function wpmt_are_there_sessions( $film_id ) {
 	}
 }
 
+function wpmt_get_youtube_embed( $string ) {
+	//$string     = 'http://www.youtube.com/watch?v=CfDQ92vOfdc';
+	if (strpos($string, '?v=')) {
+		$search = '/youtube\.com\/watch\?v=([a-zA-Z0-9]+)/smi';
+		$replace = "youtube.com/embed/$1";
+		$url = preg_replace($search, $replace, $string);
+		return $url;
+	}
+	else return $string;
+}
 ?>

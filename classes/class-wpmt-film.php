@@ -23,6 +23,7 @@ class WPMT_Film
     var $signage_text;              //The title that is displayed in POS (max 20 characters)
     var $distributor;               //The name of the distributor
     var $opening_date;              //When did this film first show in the country of this Veezi customer
+    var $start;                     //next session time start date
     var $rating;                    //Censor rating. Values vary depending on country
     var $status;                    //Valid values are: Active, Inactive, Deleted
     var $content_advisory;          // Content advisory for the film
@@ -70,6 +71,7 @@ class WPMT_Film
         update_field( 'field_56a10d337a3d1', $this->short_name, $post_id );
         update_field( 'field_56a111df1ffab', $this->status, $post_id );
         update_field( 'field_56a118f80afd1', $this->opening_date, $post_id );
+        update_field( 'field_56b571dec2eaf', $this->get_next_session_start( $this->id ), $post_id );
 
         //film veezi info
         update_field( 'field_56a10e0618f4a', $this->synopsis, $post_id );
@@ -95,9 +97,39 @@ class WPMT_Film
     }
 
 
+    function get_next_session_start ( $film_id ) {
+
+        $args = array(
+            'post_type'      => 'wpmt_session',
+            'posts_per_page' => 1,
+            'meta_query'     => array(
+                    'key'           => 'wpmt_session_film_id',
+                    'value'         => $film_id,
+                ),
+            'meta_key'      => 'wpmt_session_start',
+            'orderby'       => 'meta_value', // Results will be ordered by 'city' meta values.
+            'order'         => 'ASC',
+        );
+
+        $my_query = new WP_Query( $args );
+
+        if ( $my_query->have_posts() ) {
+            while ( $my_query->have_posts() ) { $my_query->the_post();
+                return get_field('wpmt_session_start');
+            }
+        }
+        else {
+            return false;
+        }
+
+    }
+
+
     function update_film_format( $post_id ) {
         update_field( 'field_56a10e1918f4b', $this->genre, $post_id );
         update_field( 'field_56ab9761e9e1e', $this->format, $post_id );
+        update_field( 'field_56b571dec2eaf', $this->get_next_session_start( $this->id ), $post_id );
+        //update_field( 'field_56b571dec2eaf', $this->id, $post_id );
     }
 
 

@@ -18,6 +18,7 @@ class WPMT_Performance {
     var $signage_text;              //The title that is displayed in POS (max 20 characters)
     var $distributor;               //The name of the distributor
     var $opening_date;              //When did this film first show in the country of this Veezi customer
+    var $start;                     //next session time start date
     var $rating;                    //Censor rating. Values vary depending on country
     var $status;                    //Valid values are: Active, Inactive, Deleted
     var $content_advisory;          // Content advisory for the film
@@ -65,6 +66,8 @@ class WPMT_Performance {
         update_field( 'field_56afa6c0d0b6e', $this->short_name, $post_id );
         update_field( 'field_56afa6cad0b6f', $this->status, $post_id );
         update_field( 'field_56afa6d1d0b70', $this->opening_date, $post_id );
+        update_field( 'field_56bebae941137', $this->get_next_session_start( $this->id ), $post_id );
+
 
         //film veezi info
         update_field( 'field_56afa6e4d0b72', $this->synopsis, $post_id );
@@ -86,9 +89,41 @@ class WPMT_Performance {
         update_field('', $this->governmentFilmTitle, $post_id);
         */
     }
+
+
+    function get_next_session_start ( $film_id ) {
+
+        $args = array(
+            'post_type'      => 'wpmt_session',
+            'posts_per_page' => 1,
+            'meta_query'     => array(
+                'key'           => 'wpmt_session_film_id',
+                'value'         => $film_id,
+                'compare'       => '=',
+            ),
+            'meta_key'      => 'wpmt_session_start',
+            'orderby'       => 'meta_value', // Results will be ordered by 'city' meta values.
+            'order'         => 'ASC',
+        );
+
+        $my_query = new WP_Query( $args );
+
+        if ( $my_query->have_posts() ) {
+            while ( $my_query->have_posts() ) { $my_query->the_post();
+                return get_field('wpmt_session_start');
+            }
+        }
+        else {
+            return false;
+        }
+
+    }
+
+
     function update_performance_format($post_id) {
         update_field( 'field_56afa6e9d0b73', $this->genre, $post_id );
         update_field( 'field_56afa6ddd0b71', $this->format, $post_id );
+        update_field( 'field_56bebae941137', $this->get_next_session_start( $this->id ), $post_id );
     }
 
     function get_veezi_people ($array, $role ) {
