@@ -10,8 +10,10 @@ Author URI: http://lightmarkcreative.com
 License: GPL2
 */
 
+date_default_timezone_set('America/New_York');
 
 //=========================== Includes =======================//
+
 require_once ( 'classes/class-wpmt-session.php' );
 require_once ( 'classes/class-wpmt-film.php' );
 require_once ( 'classes/class-wpmt-performance.php' );
